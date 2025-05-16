@@ -20,7 +20,7 @@ class NotificationController extends Controller
         {
             return response()->json(['message' => "unAuth"],401);
         }
-        $notifications = $user->notifications;
+        $notifications = $user->notifications->sortByDesc('created_at');
         foreach($notifications as $notification){
             $userNameSender= $notification->sender->firstname . " " .$notification->sender->lastname;
             $profile_image_sender = $notification->profile_image;
