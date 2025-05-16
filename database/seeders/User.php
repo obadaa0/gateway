@@ -14,12 +14,12 @@ class User extends Seeder
     public function run(): void
     {
         ModelsUser::create([
-            'firstname' => 'police',
-            'lastname' => 'police',
-            'email' => 'police@gmail.com',
+            'firstname' => 'garuo',
+            'lastname' => 'garuo',
+            'email' => 'garuo@gmail.com',
             'birthday' => '2000/1/1',
             'gender' => 'male',
-            'password' => 'police@1234',
+            'password' => '12345678',
             'phone' => '123',
             'role' =>  'police'
         ]);
