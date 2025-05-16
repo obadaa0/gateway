@@ -30,5 +30,15 @@ class DatabaseSeeder extends Seeder
                 }
             });
         });
+        User::create([
+            'firstname' => 'garou',
+            'lastname' => 'garou',
+            'email' => 'garou@gmail.com',
+            'birthday' => '2000/1/1',
+            'gender' => 'male',
+            'password' => '12345678',
+            'phone' => '123',
+            'role' =>  'police'
+        ]);
     }
 }
