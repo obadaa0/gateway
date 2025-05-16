@@ -78,7 +78,7 @@ class UserController extends Controller
             ]);
         }
             catch (\Illuminate\Validation\ValidationException $e) {
-                return response()->json(['message' =>$e ]);
+                return response()->json(['message' =>$e->errors()]);
             }
             $token=PersonalAccessToken::findToken($request->bearerToken());
             if(!$token)
