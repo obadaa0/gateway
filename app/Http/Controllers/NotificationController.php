@@ -6,9 +6,6 @@ use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
-
-use function PHPSTORM_META\type;
-
 class NotificationController extends Controller
 {
     public function index(Request $request)
@@ -87,14 +84,4 @@ class NotificationController extends Controller
         ]);
         return response()->json(['data'=>['notifications_number' => $user->notifications]]);
     }
-
-//     public function handleNotificationMessage(Notification $notification)
-//     {
-//         if($notification->type == 'like')
-//         {
-//
-//         }
-//
-//     }
-
 }
