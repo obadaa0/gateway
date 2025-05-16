@@ -143,7 +143,6 @@ class UserController extends Controller
         }
         $user->loadCount(['friends as friends']);
         $user->loadCount(['posts as posts']);
-
         return response()->json(['data' => $user]);
     }
 
