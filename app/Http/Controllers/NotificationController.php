@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -34,7 +35,7 @@ class NotificationController extends Controller
             $notification['post_id'] = $dataInfo->post_id;
             unset($notification['type']);
             unset($notification['data']);
-            
+
         }
         return response()->json(['data'=>$notifications]);
     }
@@ -67,6 +68,24 @@ class NotificationController extends Controller
         }
         $user->notifications->scopeUnread->markAsRead();
         return response()->json(['message' => 'notifs read successfully']);
+    }
+
+    public function numberOfNotification(Request $request)
+    {
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        if(!$token)
+        {
+            return response()->json(['message' => "unAuth"],401);
+        }
+        $user = $token->tokenable;
+        if(!$user)
+        {
+            return response()->json(['message' => "unAuth"],401);
+        }
+        $user->loadCount([
+            'notifications as notifications'
+        ]);
+        return response()->json(['data'=>['notifications_number' => $user->notifications]]);
     }
 
 //     public function handleNotificationMessage(Notification $notification)

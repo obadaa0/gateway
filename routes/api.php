@@ -44,3 +44,4 @@ use Illuminate\Http\Request;
     Route::get('/notification/index',[NotificationController::class,'index']);
     Route::post('/notification/mark-as-read/{notification}',[NotificationController::class,'markAsRead']);
     Route::post('/notification/mark-all-as-read/{notification}',[NotificationController::class,'markAllAsRead']);
+    Route::get('notification/number-of-nitif',[NotificationController::class,'numberOfNotification']);
