@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
     Route::post('/user/create',[UserController::class,'create']);
     Route::post('/user/login',[UserController::class,'login']);
     Route::post('/user/profile-image',[UserController::class,'addProfileImage']);
-    Route::patch('/password/reset-in-profile',[PasswordResetController::class,'editPasswordInProfile']);
+    Route::put('/password/reset-in-profile',[PasswordResetController::class,'editPasswordInProfile']);
     //post
     Route::post('/post/create',[PostController::class,'create']);
     Route::delete('/post/delete/{post}',[PostController::class,'delete']);
