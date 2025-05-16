@@ -68,12 +68,13 @@ class UserController extends Controller
         $token=$user->createToken('auth_token')->plainTextToken;
         return response()->json(['data' =>['token' => $token]],200);
     }
-    public function addProfileImage(Request $request)
+    public function editProfile(Request $request)
     {
         try
         {
             $validData= $request->validate([
-                'image' => 'required|file|mimes:jpeg,png,jpg'
+                'image' => 'required|file|mimes:jpeg,png,jpg',
+                'bio' => 'required|string'
             ]);
         }
             catch (\Illuminate\Validation\ValidationException $e) {
@@ -103,7 +104,8 @@ class UserController extends Controller
                 $path = asset('storage/posts/' . $imageName);
             }
             $addProfileImage=User::find($user->id)->update([
-                'profile_image' => $path
+                'profile_image' => $path,
+                'bio' =>$request->input('bio')
             ]);
             return response()->json(['message' => 'Image Profile added successfully'],200);
     }
