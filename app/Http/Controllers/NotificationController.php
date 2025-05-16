@@ -29,10 +29,13 @@ class NotificationController extends Controller
             $notification['profile_image'] = $profile_image_sender;
             $dataInfo = json_decode($notification['data']);
             $notification['message'] = $dataInfo->message;
+            if($notification->type == "friend_request")
+            {
+                $notification['post_id'] = 0;
+            }
             $notification['post_id'] = $dataInfo->post_id;
             unset($notification['type']);
             unset($notification['data']);
-
         }
         return response()->json(['data'=>$notifications]);
     }
@@ -63,7 +66,7 @@ class NotificationController extends Controller
         {
             return response()->json(['message' => "unAuth"],401);
         }
-        $user->notifications->scopeUnread->markAsRead();
+         $user->notifications()->where('is_read', false)->update(['is_read' => true]);
         return response()->json(['message' => 'notifs read successfully']);
     }
 
