@@ -25,10 +25,10 @@ class Notification extends Model
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
-    public function scopeUnread($query)
-    {
-        return $query->where('is_read', false);
-    }
+    // public function scopeUnread($query)
+    // {
+    //     return $query->where('is_read', false);
+    // }
     public function scopeRead($query)
     {
         return $query->where('is_read', true);
