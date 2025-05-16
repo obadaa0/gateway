@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
     //user
     Route::post('/password/send-code', [PasswordResetController::class, 'sendCode']);
     Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
+    Route::get('/user/show',[UserController::class,'show']);
     Route::post('/user/create',[UserController::class,'create']);
     Route::post('/user/login',[UserController::class,'login']);
     Route::post('/user/profile-image',[UserController::class,'editProfile']);

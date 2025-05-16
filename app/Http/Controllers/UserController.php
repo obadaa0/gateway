@@ -129,5 +129,19 @@ class UserController extends Controller
             ]);
             return response()->json(['message' => 'Bio added successfully'],200);
     }
+    public function show(Request $request)
+    {
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        if(!$token)
+        {
+            return response()->json(['message' => "unAuth"],401);
+        }
+        $user = $token->tokenable;
+        if(!$user)
+        {
+            return response()->json(['message' => "unAuth"],401);
+        }
+        return response()->json(['data' => $user]);
+    }
 
 }
