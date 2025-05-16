@@ -101,7 +101,7 @@ class UserController extends Controller
                     File::makeDirectory($directory, 0755, true);
                 }
                 $image->move($directory, $imageName);
-                $path = asset('storage/posts/' . $imageName);
+                $path = asset('storage/profileImage/' . $imageName);
             }
             $addProfileImage=User::find($user->id)->update([
                 'profile_image' => $path,
