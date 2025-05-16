@@ -1,0 +1,87 @@
+    public function ErrorDetect(){
+        $orginalText=Request('originaltext');
+        $voiceText=Request('voicetext');
+        $numberWordOriginal=count(explode(' ',$orginalText));
+        $numberWordVoice=count(explode(' ',$voiceText));
+        $tashkeel = ['َ', 'ً', 'ُ', 'ٌ', 'ِ', 'ٍ', 'ّ', 'ْ', 'ٓ', 'ٔ', 'ٕ','ـٰ'];
+        $orginalWord=explode(' ',$orginalText);
+        $voiceWord=explode(' ',$voiceText);
+            //correct text
+            if($orginalText===$voiceText){
+                return " Text is correct";
+            }
+            //not correct
+            else{
+                //miss word
+                if($numberWordOriginal!=$numberWordVoice){
+                    $error="";
+                    for($i=0;$i<$numberWordOriginal;$i++){
+                        if($orginalWord[$i]!=@$voiceWord[$i]){
+                            $orginalWord[$i]='<span style="color:red;">' . $orginalWord[$i] . '</span>';
+                            echo join(' ',$orginalWord);
+                            return response()->json(['message'=>'miss word']);
+                        }
+                    }
+
+                }
+        else{
+            $orginalTextWithoutTashkeel=str_replace($tashkeel,'',$orginalText);
+            $voiceTextWithoutTashkeel=str_replace($tashkeel,'',$voiceText);
+            $orginalWordWithoutTashkel=explode(' ',$orginalTextWithoutTashkeel);
+            $voiceWordWithoutTashkel=explode(' ',$voiceTextWithoutTashkeel);
+            for($i=0;$i<$numberWordOriginal;$i++){
+                similar_text($orginalWordWithoutTashkel[$i],$voiceWordWithoutTashkel[$i],$percentword);
+                if($percentword<80){
+                    $orginalWordWithoutTashkel[$i]='<span style="color:red;">' . $orginalWordWithoutTashkel[$i] . '</span>';
+                    return  response()->json(['message'=>'incorrect word']);
+                }
+            }
+
+
+
+                similar_text($orginalTextWithoutTashkeel,$voiceTextWithoutTashkeel,$percent);
+                //letter mistake
+                if($percent<100){
+                    $numberLetterOriginalText=mb_strlen($orginalText);
+                    $numberLettervoiceText=mb_strlen($voiceText);
+                    $error="";
+                    for($i=0;$i<$numberLetterOriginalText;$i++)
+                    {
+
+                        $original=mb_substr($orginalText,$i,1);
+                        if(in_array($original, $tashkeel)){
+                            continue;
+                        }
+                        $voice=mb_substr($voiceText,$i,1);
+                        if($original!==$voice){
+                            // return 'there is an error in the letters'." in Index : ".$i." the letter is : ".$original;
+                            $orginalText = mb_substr($orginalText, 0, $i) .
+                            '<span style="color:red;">' . $original . '</span>' .
+                            mb_substr($orginalText, $i + 1);
+                            return response()->json(['message'=>'letter error']);
+                        }
+
+                    }
+                }
+                //tashkeel mistake
+                if($percent==100){
+                    $numberLetterOriginalText=mb_strlen($orginalText);
+                    $numberLettervoiceText=mb_strlen($voiceText);
+                    for($i=0;$i<$numberLetterOriginalText;$i++)
+                    {
+                        $original=mb_substr($orginalText,$i,1);
+                        $voice=mb_substr($voiceText,$i,1);
+                        if(in_array($original, $tashkeel)){
+                            if($original!==$voice){
+                                $orginalText = mb_substr($orginalText, 0, $i) .
+                                '<span style="font-size:40px">' . $original . '</span>' .
+                                mb_substr($orginalText, $i + 1);
+                                return response()->json(['message'=>'tashkeel mistake']);
+                            }
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+                }
+            }}
