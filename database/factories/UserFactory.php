@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'password' => Hash::make('12345678'),
             'birthday' => $this->faker->date(),
             'role' => $this->faker->randomElement(['user', 'police']),
-            'profile_image' => null,
+            'profile_image' => "",
             'phone' => $this->faker->phoneNumber,
             'bio' => $this->faker->sentence,
             'remember_token' => Str::random(10),
