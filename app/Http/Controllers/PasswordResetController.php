@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\PasswordReset;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
@@ -70,7 +71,21 @@ class PasswordResetController extends Controller
         if(!$user){
             return response()->json(['message' => 'User Not Found !'],404);
         }
-        return response()->json(['message' =>"found User successfully"],200);
+        try{
+
+            $code = rand(100000, 999999);
+            PasswordReset::create([
+                'user_id' => $user->id,
+                'code' => $code,
+                'expires_at' => Carbon::now()->addMinutes(10),
+            ]);
+            Mail::raw("Your verification code is: $code", function ($message) use ($user) {
+                $message->to($user->email)->subject('Password Reset Code');
+            });
+        }catch(Exception $e){
+            return response()->json(['message' =>$e],400);
+        }
+        return response()->json(['message' => 'send email successfuly']);
     }
     public function checkCode(Request $request)
     {
@@ -93,6 +108,7 @@ class PasswordResetController extends Controller
     if (!$reset) {
         return response()->json(['message' => 'Invalid or expired code.'], 400);
     }
+
     return response(null,200);
     }
 
