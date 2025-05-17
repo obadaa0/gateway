@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Storage;
     //user
     Route::post('/password/send-code', [PasswordResetController::class, 'sendCode']);
-    // Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
+    Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
     Route::post('/password/check-email',[PasswordResetController::class,'checkEmail']);
     Route::post('/password/check-code',[PasswordResetController::class,'checkCode']);
     Route::get('/user/show',[UserController::class,'show']);
