@@ -18,6 +18,18 @@ class NotificationService
             ])
         ]);
     }
+    public function acceptFriendRequestNotification(User $sender ,User $receiver)
+    {
+               $receiver->notifications()->create([
+            'sender_id' => $sender->id,
+            'type' => 'accept_friend_request',
+            'data' => json_encode([
+                'message' => 'accept your friend request',
+                'friend_request_id' => $sender->id
+            ])
+        ]);
+    }
+
 
      public function sendLikeNotification(User $sender, User $receiver, $postId)
     {

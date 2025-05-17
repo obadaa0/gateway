@@ -22,5 +22,12 @@ class Friend extends Model
     {
         return $this->belongsTo(User::class, 'friend_id');
     }
-
+    public function acceptRequest()
+    {
+        return $this->update(['status' =>'accepted']);
+    }
+    public function rejectRequest()
+    {
+        return $this->update(['status' =>'rejected']);
+    }
 }

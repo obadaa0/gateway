@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Services\NotificationService;
+use Exception;
+
 class FriendshipController extends Controller
 {
     private $NotificationService;
@@ -51,7 +53,7 @@ class FriendshipController extends Controller
 }
     public function acceptRequest(Request $request, Friend $friend)
     {
-        if (!$friend) {
+       try{ if (!$friend) {
             return response()->json(['message' => 'Friend request not found'], 404);
         }
         $token = PersonalAccessToken::findToken($request->bearerToken());
@@ -60,11 +62,16 @@ class FriendshipController extends Controller
         if ($user->id !== $friend->friend_id) {
             return response()->json(['message' => 'Unauthorized to accept this request'], 403);
         }
-        $friend->update(['status' => 'accepted']);
+        $friend->acceptRequest();
+        $this->NotificationService->acceptFriendRequestNotification($user,$friend->sender);
         return response()->json([
             'message' => 'Friend request accepted successfully',
             'friendship' => $friend
-        ]);
+        ]);}
+        catch(Exception $e)
+        {
+            return $e->getMessage();
+        }
     }
     public function rejectRequest(Request $request,Friend $friend)
 {
@@ -79,8 +86,7 @@ class FriendshipController extends Controller
     if ($friend->status === 'accepted') {
         return response()->json(['message' => 'cannot reject this request'], 400);
     }
-    $friend->update(['status' => 'rejected']);
-
+    $friend->rejectRequest();
     return response()->json([
         'message' => 'reject successfully',
         'friendship' => $friend
@@ -97,7 +103,7 @@ class FriendshipController extends Controller
             return response()->json(['message' => 'user not found'], 404);
         }
         $friends = $user->friends()->get();
-        return response()->json(['friends' => $friends]);
+        return response()->json(['data' => $friends]);
     }
     public function getPendingRequest(Request $request)
     {
@@ -113,7 +119,7 @@ class FriendshipController extends Controller
         ->where('friend_id',$user->id)
         ->where('status','pending')
         ->get();
-        return response()->json(['requests' => $requests->pluck('sender')]);
+        return response()->json(['data' => $requests]);
     }
     public function isFriend(Friend $friend,Request $request)
     {
