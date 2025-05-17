@@ -217,4 +217,7 @@ class PostController extends Controller
         'posts' => $filterPost
         ] ],200);
     }
+    public function showPost(Post $post){
+        return $post;
+    }
 }

@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Route;
     Route::get('/user/show',[UserController::class,'show']);
     Route::post('/user/create',[UserController::class,'create']);
     Route::post('/user/login',[UserController::class,'login']);
+    Route::get('/user/show-profile/{user}',[UserController::class,'showProfile']);
     Route::post('/user/profile-image',[UserController::class,'editProfile']);
     Route::put('/password/reset-in-profile',[PasswordResetController::class,'editPasswordInProfile']);
     //post
     Route::post('/post/create',[PostController::class,'create']);
     Route::delete('/post/delete/{post}',[PostController::class,'delete']);
     Route::get('/post/index',[PostController::class,'getPosts']);
+    Route::get('/post/show/{post}',[PostController::class,'showPost']);
     Route::get('/post/show',[PostController::class,'getAllPost']);
     Route::post('/post/reaction',[ReactionController::class,'reactToPost']);
     Route::get('/post/{post}/like',[ReactionController::class,'getLikePost']);

@@ -145,6 +145,10 @@ class UserController extends Controller
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
     }
+    public function showProfile(User $user)
+    {
+        return $user;
+    }
 
 }
 
