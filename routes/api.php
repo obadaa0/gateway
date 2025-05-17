@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('/user/show',[UserController::class,'show']);
     Route::post('/user/create',[UserController::class,'create']);
     Route::post('/user/login',[UserController::class,'login']);
-    Route::get('/user/show-profile/{user}',[UserController::class,'showProfile']);
+    Route::get('/user/show-profile/{user}',[UserController::class,'showprofile']);
     Route::post('/user/profile-image',[UserController::class,'editProfile']);
     Route::put('/password/reset-in-profile',[PasswordResetController::class,'editPasswordInProfile']);
     //post

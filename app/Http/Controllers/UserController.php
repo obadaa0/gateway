@@ -146,7 +146,7 @@ class UserController extends Controller
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
     }
-    public function showProfile(User $user, Request $request)
+    public function showpost(User $user, Request $request)
 {
     $token = PersonalAccessToken::findToken($request->bearerToken());
     if (!$token) {
@@ -204,6 +204,22 @@ class UserController extends Controller
         ]
     ], 200);
 }
+    public function showprofile(User $user,Request $request)
+    {
+             $token = PersonalAccessToken::findToken($request->bearerToken());
+        if(!$token)
+        {
+            return response()->json(['message' => "unAuth"],401);
+        }
+        $user1 = $token->tokenable;
+        if(!$user1)
+        {
+            return response()->json(['message' => "unAuth"],401);
+        }
+        $user->loadCount(['friends as friends']);
+        $user->loadCount(['posts as posts']);
+        return response()->json(['data' => $user]);
+    }
 
 }
 
