@@ -29,7 +29,7 @@ class NotificationController extends Controller
             $notification['profile_image'] = $profile_image_sender;
             $dataInfo = json_decode($notification['data']);
             $notification['message'] = $dataInfo->message;
-            if($notification->type == "friend_request")
+            if($notification->type == "friend_request" || $notification->type == 'accept_friend_request')
             {
                 $notification['post_id'] = 0;
             }
