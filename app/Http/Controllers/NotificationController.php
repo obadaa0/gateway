@@ -33,7 +33,9 @@ class NotificationController extends Controller
             {
                 $notification['post_id'] = 0;
             }
-            $notification['post_id'] = $dataInfo->post_id;
+            else{
+                $notification['post_id'] = $dataInfo->post_id;
+            }
             unset($notification['type']);
             unset($notification['data']);
         }
