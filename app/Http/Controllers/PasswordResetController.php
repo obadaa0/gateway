@@ -8,53 +8,68 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class PasswordResetController extends Controller
 {
-    public function sendCode(Request $request)
+    // public function sendCode(Request $request)
+    // {
+    //     $user;
+    //     $code = rand(100000, 999999);
+    //     PasswordReset::create([
+    //         'user_id' => $user_id,
+    //         'code' => $code,
+    //         'expires_at' => Carbon::now()->addMinutes(10),
+    //     ]);
+    //     Mail::raw("Your verification code is: $code", function ($message) use ($user) {
+    //         $message->to($user->email)->subject('Password Reset Code');
+    //     });
+    //     return response()->json(['message' => 'Verification code sent.']);
+    // }
+//     public function resetPassword(Request $request)
+// {
+//     $request->validate([
+//         'email' => 'required|email',
+//         'code' => 'required|string',
+//         'password' => 'required|confirmed|min:6',
+//     ]);
+//     try {
+//         $user = User::where('email', $request['email'])->firstOrFail();
+//     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+//         return response()->json(['message' => 'User not found!'], 400);
+//     }
+//     $reset = PasswordReset::where('user_id', $user->id)
+//         ->where('code', $request['code'])
+//         ->where('used', false)
+//         ->where('expires_at', '>', now())
+//         ->first();
+//     if (!$reset) {
+//         return response()->json(['message' => 'Invalid or expired code.'], 400);
+//     }
+//     $user->update(['password' => bcrypt($request['password'])]);
+//     $reset->update(['used' => true]);
+//     return response()->json(['message' => 'Password has been reset successfully.']);
+// }
+    public function checkEmail(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
-        try {
-            $user = User::where('email', $request['email'])->firstOrFail();
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(['message' => 'User not found!'], 400);
+        try{
+
+            $validData = $request->validate([
+                'email' => 'required|email'
+            ]);
+        }catch(ValidationException $e){
+            return response()->json(['message'=> $e->errors()]);
         }
-        $code = rand(100000, 999999);
-        PasswordReset::create([
-            'user_id' => $user->id,
-            'code' => $code,
-            'expires_at' => Carbon::now()->addMinutes(10),
-        ]);
-        Mail::raw("Your verification code is: $code", function ($message) use ($user) {
-            $message->to($user->email)->subject('Password Reset Code');
-        });
-        return response()->json(['message' => 'Verification code sent.']);
+        $user = User::where('email',$validData['email'])->first();
+        if(!$user){
+            return response(null,404);
+        }
+        return response(null,200);
     }
-    public function resetPassword(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'code' => 'required|string',
-        'password' => 'required|confirmed|min:6',
-    ]);
-    try {
-        $user = User::where('email', $request['email'])->firstOrFail();
-    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-        return response()->json(['message' => 'User not found!'], 400);
-    }
-    $reset = PasswordReset::where('user_id', $user->id)
-        ->where('code', $request['code'])
-        ->where('used', false)
-        ->where('expires_at', '>', now())
-        ->first();
-    if (!$reset) {
-        return response()->json(['message' => 'Invalid or expired code.'], 400);
-    }
-    $user->update(['password' => bcrypt($request['password'])]);
-    $reset->update(['used' => true]);
-    return response()->json(['message' => 'Password has been reset successfully.']);
-}
+
+
+
     public function editPasswordInProfile(Request $request)
     {
         try{
