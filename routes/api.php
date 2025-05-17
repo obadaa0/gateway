@@ -1,20 +1,14 @@
 <?php
-    use App\Http\Controllers\CommentController;
-    use App\Http\Controllers\FriendshipController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordResetController;
-    use App\Http\Controllers\PostController;
-    use App\Http\Controllers\ReactionController;
-    use App\Http\Controllers\UserController;
-use App\Models\Notification;
-use App\Models\Post;
-use App\Models\PostReaction;
-use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Log;
-    use Illuminate\Support\Facades\Route;
-    use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
     //user
-    Route::post('/password/send-code', [PasswordResetController::class, 'sendCode']);
+    // Route::post('/password/send-code', [PasswordResetController::class, 'sendCode']);
     Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
     Route::post('/password/check-email',[PasswordResetController::class,'checkEmail']);
     Route::post('/password/check-code',[PasswordResetController::class,'checkCode']);

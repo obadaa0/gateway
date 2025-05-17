@@ -103,12 +103,12 @@ class PasswordResetController extends Controller
         }
         $reset = PasswordReset::where('user_id', $user->pluck('id'))
         ->where('used', false)
+        ->where('code',$validData['code'])
         ->where('expires_at', '>', now())
         ->first();
     if (!$reset) {
         return response()->json(['message' => 'Invalid or expired code.'], 400);
     }
-
     return response(null,200);
     }
 
