@@ -32,8 +32,8 @@ use Illuminate\Support\Facades\Route;
     //friend
     Route::post('/friends/{friend}/send-request', [FriendshipController::class, 'sendRequest']);
     Route::post('/friends/{friend}/remove-request', [FriendshipController::class, 'removeRequest']);
-    Route::put('/friends/{friend}/accept', [FriendshipController::class, 'acceptRequest']);
-    Route::put('/friends/{friend}/reject', [FriendshipController::class, 'rejectRequest']);
+    Route::post('/friends/{friend}/accept', [FriendshipController::class, 'acceptRequest']);
+    Route::post('/friends/{friend}/reject', [FriendshipController::class, 'rejectRequest']);
     Route::get('/friends/get-myfriend', [FriendshipController::class, 'getFriendList']);
     Route::get('/friends/get-friend-request', [FriendshipController::class, 'getPendingRequest']);
     Route::get('/friends/number-friend-request', [FriendshipController::class, 'getNumberOFPendingRequest']);
