@@ -101,7 +101,7 @@ class PasswordResetController extends Controller
         if(!$user){
             return response()->json(['message' => "User Not Found !"],404);
         }
-        $reset = PasswordReset::where('user_id', $user->id)
+        $reset = PasswordReset::where('user_id', $user->pluck('id'))
         ->where('used', false)
         ->where('expires_at', '>', now())
         ->first();
