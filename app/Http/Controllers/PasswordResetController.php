@@ -94,8 +94,6 @@ class PasswordResetController extends Controller
         return response()->json(['message' => 'Invalid or expired code.'], 400);
     }
     return response(null,200);
-
-
     }
 
     public function editPasswordInProfile(Request $request)
