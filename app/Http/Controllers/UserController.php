@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Friend;
 use App\Models\User;
 use Exception;
 use GuzzleHttp\Promise\Create;
@@ -145,10 +146,64 @@ class UserController extends Controller
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
     }
-    public function showProfile(User $user)
-    {
-        return $user;
+    public function showProfile(User $user, Request $request)
+{
+    $token = PersonalAccessToken::findToken($request->bearerToken());
+    if (!$token) {
+        return response()->json(['message' => 'unAuth'], 401);
     }
+    $user1 = $token->tokenable;
+    if (!$user1) {
+        return response()->json(['message' => 'user not found'], 404);
+    }
+    $posts = $user->posts()->withCount([
+        'reactions as likes',
+        'comment as comments'
+    ])->get();
+    if ($posts->isEmpty()) {
+        return response()->json(['message' => "can't find any post"], 204);
+    }
+    foreach ($posts as $post) {
+        $isFriend = Friend::where([
+            ['user_id', $user1->id],
+            ['friend_id', $post->user_id],
+        ])->orWhere([
+            ['user_id', $post->user_id],
+            ['friend_id', $user1->id],
+        ])->exists();
+        $hasLiked = $post->reactions()
+            ->where('reaction_type', 'like')
+            ->where('user_id', $user1->id)
+            ->exists();
+        $post->setAttribute('is_friend', $isFriend);
+        $post->setAttribute('has_liked', $hasLiked);
+        $post->setAttribute('user_name', $user->firstname . ' ' . $user->lastname);
+        $post->setAttribute('profile_image', $user->profile_image);
+        unset($post->user);
+    }
+
+    return response()->json([
+        'message' => 'Successfully response',
+        'data' => [
+            'user' => [
+                'id' => $user->id,
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                'email' => $user->email,
+                'gender' => $user->gender,
+                'email_verified_at' => $user->email_verified_at,
+                'birthday' => $user->birthday,
+                'role' => $user->role,
+                'profile_image' => $user->profile_image,
+                'phone' => $user->phone,
+                'bio' => $user->bio,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+                'posts' => $posts,
+            ]
+        ]
+    ], 200);
+}
 
 }
 
