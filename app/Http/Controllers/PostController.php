@@ -218,6 +218,8 @@ class PostController extends Controller
         ] ],200);
     }
     public function showPost(Post $post){
+        $post->loadCount('reactions as likes')
+        ->loadCount('comment as comments');
         return response()->json(['data'=>[$post]]);
     }
 }
