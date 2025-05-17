@@ -51,6 +51,12 @@ class User extends Authenticatable
         ->wherePivot('status', 'accepted')
         ->withTimestamps();
     }
+        public function pendingRequest()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+        ->wherePivot('status', 'pending')
+        ->withTimestamps();
+    }
     public function notifications()
     {
         return $this->hasMany(Notification::class);

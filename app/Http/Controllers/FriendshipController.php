@@ -121,6 +121,20 @@ class FriendshipController extends Controller
         ->get();
         return response()->json(['data' => $requests]);
     }
+    public function getNumberOFPendingRequest(Request $request)
+    {
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        if(!$token){
+            return response()->json(['message' => "unAuth"],401);
+        }
+        $user = $token->tokenable;
+        if(!$user)
+        {
+            return response()->json(['message' => "unAuth"],401);
+        }
+        $user->loadCount(['pendingRequest as pendingRequest ']);
+        return response()->json(['data' => $user->pendingRequest]);
+    }
     public function isFriend(Friend $friend,Request $request)
     {
     $token = PersonalAccessToken::findToken($request->bearerToken());

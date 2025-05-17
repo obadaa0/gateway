@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Route;
     Route::put('/friends/{friend}/reject', [FriendshipController::class, 'rejectRequest']);
     Route::get('/friends/get-myfriend', [FriendshipController::class, 'getFriendList']);
     Route::get('/friends/get-friend-request', [FriendshipController::class, 'getPendingRequest']);
+    Route::get('/friends/number-friend-request', [FriendshipController::class, 'getNumberOFPendingRequest']);
     Route::get('/friend/isfriend/{friend}',[FriendshipController::class,'isFriend']);
     //notifications
     Route::get('/notification/index',[NotificationController::class,'index']);
