@@ -185,22 +185,7 @@ class UserController extends Controller
     return response()->json([
         'message' => 'Successfully response',
         'data' => [
-            'user' => [
-                'id' => $user->id,
-                'firstname' => $user->firstname,
-                'lastname' => $user->lastname,
-                'email' => $user->email,
-                'gender' => $user->gender,
-                'email_verified_at' => $user->email_verified_at,
-                'birthday' => $user->birthday,
-                'role' => $user->role,
-                'profile_image' => $user->profile_image,
-                'phone' => $user->phone,
-                'bio' => $user->bio,
-                'created_at' => $user->created_at,
-                'updated_at' => $user->updated_at,
                 'posts' => $posts,
-            ]
         ]
     ], 200);
 }
@@ -211,15 +196,9 @@ class UserController extends Controller
         {
             return response()->json(['message' => "unAuth"],401);
         }
-        $user1 = $token->tokenable;
-        if(!$user1)
-        {
-            return response()->json(['message' => "unAuth"],401);
-        }
         $user->loadCount(['friends as friends']);
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
     }
-
 }
 
