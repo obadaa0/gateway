@@ -217,9 +217,11 @@ class PostController extends Controller
         'posts' => $filterPost
         ] ],200);
     }
-    public function showPost(Post $post){
-        $post->loadCount('reactions as likes')
+public function showPost(Post $post) {
+    $post->loadCount('reactions as likes')
         ->loadCount('comment as comments');
-        return response()->json(['data'=>[$post]]);
-    }
+    $post['user_name'] = $post->User->firstname . " " . $post->User->lastname;
+    $post->setRelation('user', null);
+    return response()->json(['data' => [$post]]);
+}
 }
