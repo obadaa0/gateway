@@ -218,6 +218,6 @@ class PostController extends Controller
         ] ],200);
     }
     public function showPost(Post $post){
-        return response()->json(['data'=>$post]);
+        return response()->json(['data'=>[$post]]);
     }
 }
