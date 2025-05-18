@@ -5,12 +5,12 @@ use App\Models\User;
 use App\Models\PasswordReset;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
+use App\Events\PasswordChanged;
+use App\Mail\PasswordResetCodeMail;
 
 class PasswordResetController extends Controller
 {
@@ -55,6 +55,12 @@ class PasswordResetController extends Controller
     }
     $user->update(['password' => bcrypt($request['password'])]);
     $reset->update(['used' => true]);
+    try{
+        event(new PasswordChanged($user));
+    }catch(Exception $e)
+    {
+        return $e->getMessage();
+    }
     return response()->json(['message' => 'Password has been reset successfully.']);
 }
     public function checkEmail(Request $request)
@@ -79,9 +85,7 @@ class PasswordResetController extends Controller
                 'code' => $code,
                 'expires_at' => Carbon::now()->addMinutes(10),
             ]);
-            Mail::raw("Your verification code is: $code", function ($message) use ($user) {
-                $message->to($user->email)->subject('Password Reset Code');
-            });
+           Mail::to($user->email)->send(new PasswordResetCodeMail($user, $code));
         }catch(Exception $e){
             return response()->json(['message' =>$e],400);
         }
