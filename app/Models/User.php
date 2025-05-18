@@ -51,6 +51,30 @@ class User extends Authenticatable
         ->wherePivot('status', 'accepted')
         ->withTimestamps();
     }
+    public function friendsOf()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
+            ->wherePivot('status', 'accepted')
+            ->withTimestamps();
+    }
+        public function getAllFriendsAttribute()
+    {
+        $friendsFromMe = $this->friends()->pluck('users.id')->toArray();
+        $friendsToMe = $this->friendsOf()->pluck('users.id')->toArray();
+
+        $allFriendIds = array_unique(array_merge($friendsFromMe, $friendsToMe));
+
+        return User::whereIn('id', $allFriendIds)->get();
+    }
+
+    public function getAllFriendsCountAttribute()
+    {
+        $friendsFromMeCount = $this->friends()->count();
+        $friendsToMeCount = $this->friendsOf()->count();
+
+        return $friendsFromMeCount + $friendsToMeCount;
+    }
+
     public function notifications()
     {
         return $this->hasMany(Notification::class);
