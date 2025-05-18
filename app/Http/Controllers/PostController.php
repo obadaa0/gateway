@@ -86,7 +86,9 @@ class PostController extends Controller
                 'message' => 'post not found !'
             ],404);
         }
-        $post=$post->where('user_id',$user->id);
+        $post=$post
+        ->where('user_id',$user->id)
+        ->where('id',$post->id);
         if(!$post)
         {
             return response()->json([
