@@ -39,7 +39,7 @@ class User extends Authenticatable
     }
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class,'reporter_id');
     }
     public function comments()
     {

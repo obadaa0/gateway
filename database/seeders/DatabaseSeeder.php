@@ -31,13 +31,13 @@ class DatabaseSeeder extends Seeder
             });
         });
         User::create([
-            'firstname' => 'garou',
-            'lastname' => 'garou',
-            'email' => 'garou@gmail.com',
-            'birthday' => '2000/1/1',
+            'firstname' => 'hamza',
+            'lastname' => 'saadeldeel',
+            'email' => 'hamzasaadaldeen2002@gmail.com',
+            'birthday' => '2002/7/17',
             'gender' => 'male',
             'password' => '12345678',
-            'phone' => '123',
+            'phone' => '0954649881',
             'role' =>  'police'
         ]);
     }

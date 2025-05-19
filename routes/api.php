@@ -5,6 +5,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
     //user
@@ -46,3 +47,10 @@ use Illuminate\Support\Facades\Route;
     Route::post('/notification/mark-as-read/{notification}',[NotificationController::class,'markAsRead']);
     Route::post('/notification/mark-all-as-read',[NotificationController::class,'markAllAsRead']);
     Route::get('notification/number-of-nitif',[NotificationController::class,'numberOfNotification']);
+    //report
+    Route::get('/report/index/{report}',[ReportController::class,'index'])->middleware('role');
+    Route::get('/report/show',[ReportController::class,'show'])->middleware('role');
+    Route::post('/report/create',[ReportController::class,'create']);
+    Route::post('report/progress/{report}',[ReportController::class,'setProgress']);
+    Route::post('report/resolved/{report}',[ReportController::class,'setResolved']);
+

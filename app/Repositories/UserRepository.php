@@ -10,5 +10,8 @@ class UserRepository
     {
         return $user->email ?: null;
     }
-    
+    public function login($token)
+    {
+
+    }
 }
