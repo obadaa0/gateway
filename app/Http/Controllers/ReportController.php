@@ -19,8 +19,10 @@ class ReportController extends Controller
     }
     public function show(Request $request)
     {
-        $numberOfReport = $request->input('per_page',10);
-        return Report::paginate($numberOfReport);
+        // $numberOfReport = $request->input('per_page',10);
+        // return Report::paginate($numberOfReport);
+        $user = User::whereHas('reports')->get();
+        return $user;
     }
     public function create(Request $request)
     {
