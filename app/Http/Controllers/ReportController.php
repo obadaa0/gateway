@@ -65,5 +65,4 @@ class ReportController extends Controller
         $report->resolved();
         return $report;
     }
-
 }

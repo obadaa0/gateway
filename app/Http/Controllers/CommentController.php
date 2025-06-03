@@ -96,17 +96,7 @@ class CommentController extends Controller
         {
             return response()->json(['message' => 'no comment yet']);
         }
-        foreach($comments as $comment)
-        {
-            if($comment['user_id'] == $user->id)
-            {
-                $comment['flag'] = true;
-            }else{
-                $comment['flag'] = false;
-            }
-            $comment['username'] = $this->getusername($comment['user_id']);
-            $comment['profile_image'] = $this->getImageProfile($comment['user_id']);
-        }
+        $comments = $this->addCommentInfo($comments,$user);
         return response()->json(['data' => $comments]);
     }
     public function getusername($userid)
@@ -126,6 +116,22 @@ class CommentController extends Controller
             return;
         }
         return $user->profile_image ? $user->profile_image : "";
+    }
+
+    public function addCommentInfo($comments,$user)
+    {
+        foreach($comments as $comment)
+        {
+            if($comment['user_id'] == $user->id)
+            {
+                $comment['flag'] = true;
+            }else{
+                $comment['flag'] = false;
+            }
+            $comment['username'] = $this->getusername($comment['user_id']);
+            $comment['profile_image'] = $this->getImageProfile($comment['user_id']);
+        }
+        return $comments;
     }
 
 }
