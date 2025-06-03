@@ -14,12 +14,12 @@ class ReportController extends Controller
 {
     public function index(Report $report,Request $request)
     {
-        $report->User;
+    $report->User;
     return $report;
     }
     public function show(Request $request)
     {
-        $numberOfReport = $request->input('per_page');
+        $numberOfReport = $request->input('per_page',10);
         return Report::paginate($numberOfReport);
     }
     public function create(Request $request)
@@ -54,7 +54,6 @@ class ReportController extends Controller
        $report = $user->reports()->create($validData);
         return response()->json(['message'=>'report send successfully', 'data' =>$report],200);
     }
-
     public function setProgress(Report $report)
     {
          $report->progress();

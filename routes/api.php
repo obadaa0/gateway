@@ -53,4 +53,3 @@ use Illuminate\Support\Facades\Route;
     Route::post('/report/create',[ReportController::class,'create']);
     Route::post('report/progress/{report}',[ReportController::class,'setProgress']);
     Route::post('report/resolved/{report}',[ReportController::class,'setResolved']);
-
