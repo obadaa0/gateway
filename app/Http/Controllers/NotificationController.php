@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Helpers\AuthHelper;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,12 +10,8 @@ class NotificationController extends Controller
 {
     public function index(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json(['message' => "unAuth"],401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if(!$user)
         {
             return response()->json(['message' => "unAuth"],401);
@@ -43,12 +39,8 @@ class NotificationController extends Controller
     }
     public function markAsRead(Request $request,Notification $notification)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json(['message' => "unAuth"],401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if(!$user)
         {
             return response()->json(['message' => "unAuth"],401);
@@ -58,12 +50,8 @@ class NotificationController extends Controller
     }
     public function markAllAsRead(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json(['message' => "unAuth"],401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if(!$user)
         {
             return response()->json(['message' => "unAuth"],401);
@@ -74,12 +62,8 @@ class NotificationController extends Controller
 
     public function numberOfNotification(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json(['message' => "unAuth"],401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if(!$user)
         {
             return response()->json(['message' => "unAuth"],401);

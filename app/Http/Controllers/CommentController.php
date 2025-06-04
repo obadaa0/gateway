@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AuthHelper;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -28,12 +29,7 @@ class CommentController extends Controller
     {
         return response()->json(['message' => $e],422);
     }
-    $token = PersonalAccessToken::findToken($request->bearerToken());
-    if(!$token)
-    {
-        return response()->json(['message' => 'unAuth'],401);
-    }
-    $user = $token->tokenable;
+    $user = AuthHelper::getUserFromToken($request);
     if(!$user)
     {
         return response()->json(['message' => 'unAuth'],401);
@@ -55,12 +51,7 @@ class CommentController extends Controller
 
     public function deleteComment(Comment $comment,Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json(['message' => 'unAuth'],401);
-        }
-        $user = $token->tokenable;
+        $user = AuthHelper::getUserFromToken($request);
         if(!$user)
         {
             return response()->json(['message' => 'unAuth'],401);
@@ -81,12 +72,7 @@ class CommentController extends Controller
 
     public function getAllCommentsPost(Post $post,Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json(['message' => 'unAuth'],401);
-        }
-        $user = $token->tokenable;
+    $user = AuthHelper::getUserFromToken($request);
         if(!$user)
         {
             return response()->json(['message' => 'unAuth'],401);

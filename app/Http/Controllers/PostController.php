@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redis;
+use App\Helpers\AuthHelper;
 
 class PostController extends Controller
 {
@@ -35,14 +36,8 @@ class PostController extends Controller
                 $image->move($directory, $imageName);
                 $path = asset('storage/posts/' . $imageName);
                }
-            $token=PersonalAccessToken::findToken($request->bearerToken());
-            if(!$token)
-            {
-                return response()->json([
-                    'message' => 'unAuth'
-                ]);
-            }
-            $user=$token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
             if(!$user){
                 return response()->json([
                     'message' => 'user not found !'
@@ -68,14 +63,8 @@ class PostController extends Controller
     }
     public function delete(Request $request,Post $post)
     {
-        $token=PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json([
-                'message' => 'unAuth'
-            ]);
-        }
-        $user=$token->tokenable;
+      $user = AuthHelper::getUserFromToken($request);
+
         if(!$user){
             return response()->json([
                 'message' => 'user not found !'
@@ -106,11 +95,8 @@ class PostController extends Controller
     }
     public function getPosts(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if (!$token) {
-            return response()->json(['message' => 'unAuth'], 401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if (!$user) {
             return response()->json(['message' => 'user not found'], 404);
         }
@@ -150,11 +136,8 @@ class PostController extends Controller
 
     public function getAllPost(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if (!$token) {
-            return response()->json(['message' => 'unAuth'], 401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if (!$user) {
             return response()->json(['message' => 'user not found'], 404);
         }

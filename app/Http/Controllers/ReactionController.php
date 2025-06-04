@@ -9,6 +9,7 @@ use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
+use App\Helpers\AuthHelper;
 
 class ReactionController extends Controller
 {
@@ -29,12 +30,8 @@ class ReactionController extends Controller
         {
             return response()->json(['message' => $e],422);
         }
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json(['message' => 'unAuth'],401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if(!$user)
         {
             return response()->json(['message' => 'unAuth'],401);
@@ -71,11 +68,8 @@ class ReactionController extends Controller
     }
     public function getLikedUser(Post $post,Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if (!$token) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AuthHelper;
 use App\Models\Friend;
 use App\Models\User;
 use Exception;
@@ -81,14 +82,7 @@ class UserController extends Controller
             catch (\Illuminate\Validation\ValidationException $e) {
                 return response()->json(['message' =>$e->errors()]);
             }
-            $token=PersonalAccessToken::findToken($request->bearerToken());
-            if(!$token)
-            {
-                return response()->json([
-                    'message' => 'unAuth'
-                ],401);
-            }
-            $user=$token->tokenable;
+            $user = AuthHelper::getUserFromToken($request);
             if(!$user){
                 return response()->json([
                     'message' => 'user not found !'
@@ -112,32 +106,20 @@ class UserController extends Controller
     }
     public function addBio(Request $request)
     {
-        $token=PersonalAccessToken::findToken($request->bearerToken());
-            if(!$token)
-            {
-                return response()->json([
-                    'message' => 'unAuth'
-                ],401);
-            }
-            $user=$token->tokenable;
+            $user=AuthHelper::getUserFromToken($request);
             if(!$user){
                 return response()->json([
                     'message' => 'user not found !'
                 ],404);
             }
-            $addBio = User::find($user->id)->update([
+             User::find($user->id)->update([
                 'bio' => $request['text']
             ]);
             return response()->json(['message' => 'Bio added successfully'],200);
     }
     public function show(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token)
-        {
-            return response()->json(['message' => "unAuth"],401);
-        }
-        $user = $token->tokenable;
+        $user =AuthHelper::getUserFromToken($request);
         if(!$user)
         {
             return response()->json(['message' => "unAuth"],401);
@@ -147,12 +129,8 @@ class UserController extends Controller
         return response()->json(['data' => $user]);
     }
     public function showpost(User $user, Request $request)
-{
-    $token = PersonalAccessToken::findToken($request->bearerToken());
-    if (!$token) {
-        return response()->json(['message' => 'unAuth'], 401);
-    }
-    $user1 = $token->tokenable;
+    {
+    $user1 =AuthHelper::getUserFromToken($request);
     if (!$user1) {
         return response()->json(['message' => 'user not found'], 404);
     }
@@ -191,10 +169,10 @@ class UserController extends Controller
 }
     public function showprofile(User $user,Request $request)
     {
-             $token = PersonalAccessToken::findToken($request->bearerToken());
+        $token = AuthHelper::getUserFromToken($request);
         if(!$token)
         {
-            return response()->json(['message' => "unAuth"],401);
+            return response()->json(['message' => 'UnAuth'],401);
         }
          $friendsCount = $user->all_friends_count;
          $user['friends'] = $friendsCount;

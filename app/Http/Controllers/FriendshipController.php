@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Helpers\AuthHelper;
 use App\Models\Friend;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -18,12 +18,8 @@ class FriendshipController extends Controller
     }
     public function sendRequest(Request $request, User $friend)
 {
-    $token = PersonalAccessToken::findToken($request->bearerToken());
-    if (!$token) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
+    $user = AuthHelper::getUserFromToken($request);
 
-    $user = $token->tokenable;
     if (!$user) {
         return response()->json(['message' => 'Unauthorized'], 401);
     }
@@ -53,12 +49,11 @@ class FriendshipController extends Controller
 }
     public function acceptRequest(Request $request, Friend $friend)
     {
-       try{ if (!$friend) {
+       try{
+        if (!$friend) {
             return response()->json(['message' => 'Friend request not found'], 404);
         }
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        $user = $token->tokenable;
-
+            $user = AuthHelper::getUserFromToken($request);
         if ($user->id !== $friend->friend_id) {
             return response()->json(['message' => 'Unauthorized to accept this request'], 403);
         }
@@ -78,8 +73,7 @@ class FriendshipController extends Controller
     if (!$friend) {
         return response()->json(['message' => 'request not found'], 404);
     }
-    $token = PersonalAccessToken::findToken($request->bearerToken());
-    $user = $token->tokenable;
+        $user = AuthHelper::getUserFromToken($request);
     if ($user->id !== $friend->friend_id) {
         return response()->json(['message' => 'unAuth'], 403);
     }
@@ -94,11 +88,7 @@ class FriendshipController extends Controller
 }
     public function getFriendList(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if (!$token) {
-            return response()->json(['message' => 'unAuth'], 401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
         if (!$user) {
             return response()->json(['message' => 'user not found'], 404);
         }
@@ -107,11 +97,8 @@ class FriendshipController extends Controller
     }
     public function getPendingRequest(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if (!$token) {
-            return response()->json(['message' => 'unAuth'], 401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if (!$user) {
             return response()->json(['message' => 'user not found'], 404);
         }
@@ -123,11 +110,8 @@ class FriendshipController extends Controller
     }
     public function getNumberOFPendingRequest(Request $request)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token){
-            return response()->json(['message' => "unAuth"],401);
-        }
-        $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
         if(!$user)
         {
             return response()->json(['message' => "unAuth"],401);
@@ -137,11 +121,8 @@ class FriendshipController extends Controller
     }
     public function isFriend(Friend $friend,Request $request)
     {
-    $token = PersonalAccessToken::findToken($request->bearerToken());
-    if (!$token) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
-    $user = $token->tokenable;
+     $user = AuthHelper::getUserFromToken($request);
+
     if (!$user) {
         return response()->json(['message' => 'Unauthorized'], 401);
     }
@@ -160,11 +141,8 @@ class FriendshipController extends Controller
     }
     public function removeRequest(Request $request, User $friend)
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-    if (!$token) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
-    $user = $token->tokenable;
+      $user = AuthHelper::getUserFromToken($request);
+
     if (!$user) {
         return response()->json(['message' => 'Unauthorized'], 401);
     }

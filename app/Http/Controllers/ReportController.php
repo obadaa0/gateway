@@ -12,16 +12,17 @@ use Illuminate\Support\Facades\File;
 
 class ReportController extends Controller
 {
-    public function index(Report $report,Request $request)
+    public function show(Report $report,Request $request)
     {
-    $report->User;
+    $report = Report::with('User')->paginate(10);
     return $report;
     }
-    public function show(Request $request)
-    {
-        $user = User::whereHas('reports')->with('reports')->get();
-        return $user;
-    }
+    // public function show(Request $request)
+    // {
+    //     $numberOfReport = $request->input('per_page',10);
+    //     $user = User::whereHas('reports')->with('reports')->paginate($numberOfReport);
+    //     return $user;
+    // }
     public function create(Request $request)
     {
         try{
