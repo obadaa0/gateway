@@ -19,6 +19,8 @@ return new class extends Migration
             $table->enum('gender',['male','female']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('national_number');
+            $table->string('location')->nullable();
             $table->date('birthday');
             $table->enum('role',['user','police'])->default('user');
             $table->string('profile_image')->default("");

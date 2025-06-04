@@ -51,5 +51,5 @@ use Illuminate\Support\Facades\Route;
     Route::get('/report/show',[ReportController::class,'show']);//->middleware('isPolice')
     // Route::get('/report/show',[ReportController::class,'show']);//->middleware('isPolice')
     Route::post('/report/create',[ReportController::class,'create']);
-    Route::post('report/progress/{report}',[ReportController::class,'setProgress']);
-    Route::post('report/resolved/{report}',[ReportController::class,'setResolved']);
+    Route::get('report/progress/{report}',[ReportController::class,'setProgress']);
+    Route::get('report/resolved/{report}',[ReportController::class,'setResolved']);
