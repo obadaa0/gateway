@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AuthHelper;
+use App\Helpers\MediaHelper;
 use App\Models\Report;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,6 +25,7 @@ class ReportController extends Controller
     //     $user = User::whereHas('reports')->with('reports')->paginate($numberOfReport);
     //     return $user;
     // }
+
     public function create(Request $request)
     {
         try{
@@ -33,22 +36,8 @@ class ReportController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e){
             return response()->json(['message' => $e->errors()]);
         }
-            if ($request->hasFile('media')) {
-                $media = $request->file('media');
-                $mediaName = Str::random(20) . '.' . $media->getClientOriginalExtension();
-                $directory = public_path('storage/reports');
-                if (!File::exists($directory)) {
-                    File::makeDirectory($directory, 0755, true);
-                }
-                $media->move($directory, $mediaName);
-                $path = asset('storage/reports/' . $mediaName);
-                $validData['media'] =$path;
-               }
-        $token  = PersonalAccessToken::findToken($request->bearerToken());
-        if(!$token){
-            return response()->json(['message' => "unAuth"]);
-        }
-        $user = $token->tokenable;
+        $validData['media'] = MediaHelper::StoreMedia('reports',$request);
+        $user = AuthHelper::getUserFromToken($request);
         if(!$user){
             return response()->json(['message' => "unAuth"]);
         }

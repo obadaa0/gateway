@@ -14,6 +14,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redis;
 use App\Helpers\AuthHelper;
+use App\Helpers\MediaHelper;
 
 class PostController extends Controller
 {
@@ -24,20 +25,8 @@ class PostController extends Controller
                 'content' => 'required|string',
                 'media' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi',
             ]);
-            $path = null;
-            if ($request->hasFile('media')) {
-                $image = $request->file('media');
-                $imageName = Str::random(20) . '.' . $image->getClientOriginalExtension();
-
-                $directory = public_path('storage/posts');
-                if (!File::exists($directory)) {
-                    File::makeDirectory($directory, 0755, true);
-                }
-                $image->move($directory, $imageName);
-                $path = asset('storage/posts/' . $imageName);
-               }
-     $user = AuthHelper::getUserFromToken($request);
-
+            $path = MediaHelper::StoreMedia('posts',$request,'media');
+            $user = AuthHelper::getUserFromToken($request);
             if(!$user){
                 return response()->json([
                     'message' => 'user not found !'
@@ -105,10 +94,9 @@ class PostController extends Controller
         {
             return response()->json(['message' => "can't find any post"],200);
         }
-        // $posts->eac
         foreach($posts as $post)
         {
-                    $hasLiked = $post->reactions()
+            $hasLiked = $post->reactions()
             ->where('reaction_type', 'like')
             ->where('user_id', $user->id)
             ->exists();

@@ -89,7 +89,7 @@ class ReactionController extends Controller
              $reaction->user['is_friend'] = $isFriend;
              if($isFriend)
              {
-                $reaction->user['status'] = Friend::where([
+        $reaction->user['status'] = Friend::where([
         ['user_id', $user->id],
         ['friend_id', $reaction->user->id],
     ])->orWhere([

@@ -38,8 +38,7 @@ class CommentController extends Controller
         'user_id' => $user->id,
         'comment' => $request->comment
     ]);
-    $comment['username'] = $user->firstname . ' ' .$user->lastname;
-    $comment['profile_image'] = $user->profile_image;
+    $comment = $this->addCommentInfo($comment,$user);
     if($user->id != $post->User->id){
         $this->NotificationService->sendCommentNotification($user,$post->User,$post->id,$comment);
     }
@@ -106,18 +105,23 @@ class CommentController extends Controller
 
     public function addCommentInfo($comments,$user)
     {
-        foreach($comments as $comment)
-        {
-            if($comment['user_id'] == $user->id)
+        if(is_array($comments)){
+
+            foreach($comments as $comment)
             {
-                $comment['flag'] = true;
-            }else{
-                $comment['flag'] = false;
+                if($comment['user_id'] == $user->id)
+                {
+                    $comment['flag'] = true;
+                }else{
+                    $comment['flag'] = false;
+                }
+                $comment['username'] = $this->getusername($comment['user_id']);
+                $comment['profile_image'] = $this->getImageProfile($comment['user_id']);
             }
-            $comment['username'] = $this->getusername($comment['user_id']);
-            $comment['profile_image'] = $this->getImageProfile($comment['user_id']);
+            return $comments;
         }
+        $comments['username'] = $this->getusername($comments['user_id']);
+        $comments['profile_image'] = $this->getImageProfile($comments['user_id']);
         return $comments;
     }
-
 }

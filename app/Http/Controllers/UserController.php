@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AuthHelper;
+use App\Helpers\MediaHelper;
 use App\Models\Friend;
 use App\Models\User;
 use Exception;
@@ -88,21 +89,12 @@ class UserController extends Controller
                     'message' => 'user not found !'
                 ],404);
             }
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = Str::random(20) . '.' . $image->getClientOriginalExtension();
-                $directory = public_path('storage/profileImage');
-                if (!File::exists($directory)) {
-                    File::makeDirectory($directory, 0755, true);
-                }
-                $image->move($directory, $imageName);
-                $path = asset('storage/profileImage/' . $imageName);
-            }
+            $path = MediaHelper::StoreMedia('profileImage',$request,'image');
             $addProfileImage=User::find($user->id)->update([
                 'profile_image' => $path,
                 'bio' =>$request->input('bio')
             ]);
-            return response()->json(['message' => 'Image Profile added successfully'],200);
+            return response()->json(['message' => 'Image Profile update successfully'],200);
     }
     public function addBio(Request $request)
     {

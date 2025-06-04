@@ -11,30 +11,12 @@ class NotificationController extends Controller
     public function index(Request $request)
     {
      $user = AuthHelper::getUserFromToken($request);
-
         if(!$user)
         {
             return response()->json(['message' => "unAuth"],401);
         }
         $notifications = $user->notifications->sortByDesc('created_at')->values();
-        foreach($notifications as $notification){
-            $userNameSender= $notification->sender->firstname . " " .$notification->sender->lastname;
-            $profile_image_sender = $notification->profile_image;
-            unset($notification['sender']);
-            $notification['sender'] = $userNameSender;
-            $notification['profile_image'] = $profile_image_sender;
-            $dataInfo = json_decode($notification['data']);
-            $notification['message'] = $dataInfo->message;
-            if($notification->type == "friend_request" || $notification->type == 'accept_friend_request')
-            {
-                $notification['post_id'] = 0;
-            }
-            else{
-                $notification['post_id'] = $dataInfo->post_id;
-            }
-            // unset($notification['type']);
-            unset($notification['data']);
-        }
+        $notifications = $this->addNotificationInfo($notifications);
         return response()->json(['data'=>$notifications]);
     }
     public function markAsRead(Request $request,Notification $notification)
@@ -73,4 +55,27 @@ class NotificationController extends Controller
         ]);
         return response()->json(['data'=>['notifications_number' => $user->notifications]]);
     }
+
+    public function addNotificationInfo($notifications)
+    {
+        foreach($notifications as $notification){
+            $userNameSender= $notification->sender->firstname . " " .$notification->sender->lastname;
+            $profile_image_sender = $notification->profile_image;
+            unset($notification['sender']);
+            $notification['sender'] = $userNameSender;
+            $notification['profile_image'] = $profile_image_sender;
+            $dataInfo = json_decode($notification['data']);
+            $notification['message'] = $dataInfo->message;
+            if($notification->type == "friend_request" || $notification->type == 'accept_friend_request')
+            {
+                $notification['post_id'] = 0;
+            }
+            else{
+                $notification['post_id'] = $dataInfo->post_id;
+            }
+            unset($notification['data']);
+        }
+        return $notifications;
+    }
+
 }

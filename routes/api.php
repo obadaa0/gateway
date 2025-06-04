@@ -48,8 +48,8 @@ use Illuminate\Support\Facades\Route;
     Route::post('/notification/mark-all-as-read',[NotificationController::class,'markAllAsRead']);
     Route::get('notification/number-of-nitif',[NotificationController::class,'numberOfNotification']);
     //report
-    Route::get('/report/show',[ReportController::class,'show']);//->middleware('role')
-    // Route::get('/report/show',[ReportController::class,'show']);//->middleware('role')
+    Route::get('/report/show',[ReportController::class,'show']);//->middleware('isPolice')
+    // Route::get('/report/show',[ReportController::class,'show']);//->middleware('isPolice')
     Route::post('/report/create',[ReportController::class,'create']);
     Route::post('report/progress/{report}',[ReportController::class,'setProgress']);
     Route::post('report/resolved/{report}',[ReportController::class,'setResolved']);
