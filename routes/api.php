@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
     Route::put('/password/reset-in-profile',[PasswordResetController::class,'editPasswordInProfile']);
     Route::get('/police/users',[UserController::class,'getUsers']);
     Route::get('/police/polices',[UserController::class,'getPolice']);
-    Route::post('/user/block/{user}',[UserController::class,'blockUser']);
-    Route::post('/user/unblock/{user}',[UserController::class,'UnblockUser']);
+    Route::get('/user/block/{user}',[UserController::class,'blockUser']);
+    Route::get('/user/unblock/{user}',[UserController::class,'UnblockUser']);
     //post
     Route::post('/post/create',[PostController::class,'create']);
     Route::delete('/post/delete/{post}',[PostController::class,'delete']);
