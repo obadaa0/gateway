@@ -59,7 +59,10 @@ class UserController extends Controller
                 'errors' => $e->errors()
             ], 422);
         }
-        $user=User::where('email',$request['email'])->first();
+        $user=User::
+        where('email',$request['email'])
+        ->where('block',false)
+        ->first();
         if(!$user)
         {
             return response()->json(['data' =>'user not found'],404);
@@ -181,6 +184,16 @@ class UserController extends Controller
     {
         $users = User::where('role','user')->paginate(10);
         return response()->json(['data' => $users]);
+    }
+    public function blockUser(User $user)
+    {
+        $user->block();
+        return "user block suc";
+    }
+    public function UnblockUser(User $user)
+    {
+        $user->Unblock();
+        return "removed block";
     }
 
 }

@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('/police/users',[UserController::class,'getUsers']);
     Route::get('/police/polices',[UserController::class,'getPolice']);
     Route::post('/user/block/{user}',[UserController::class,'blockUser']);
-    Route::post('/user/block/{user}',[UserController::class,'blockUser']);
+    Route::post('/user/block/{user}',[UserController::class,'UnblockUser']);
     //post
     Route::post('/post/create',[PostController::class,'create']);
     Route::delete('/post/delete/{post}',[PostController::class,'delete']);

@@ -79,4 +79,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notification::class);
     }
+    public function block()
+    {
+        return $this->update([
+            'block' => true
+        ]);
+    }
+    public function Unblock()
+    {
+        return $this->update([
+            'block' => false
+        ]);
+    }
+
 }
