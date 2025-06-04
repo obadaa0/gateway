@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
     Route::get('/user/show-post/{user}',[UserController::class,'showpost']);
     Route::post('/user/profile-image',[UserController::class,'editProfile']);
     Route::put('/password/reset-in-profile',[PasswordResetController::class,'editPasswordInProfile']);
+    Route::get('/police/users',[UserController::class,'getUsers']);
+    Route::get('/police/polices',[UserController::class,'getPolice']);
     //post
     Route::post('/post/create',[PostController::class,'create']);
     Route::delete('/post/delete/{post}',[PostController::class,'delete']);

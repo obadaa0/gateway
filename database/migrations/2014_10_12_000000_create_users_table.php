@@ -25,6 +25,7 @@ return new class extends Migration
             $table->enum('role',['user','police'])->default('user');
             $table->string('profile_image')->default("");
             $table->string('phone');
+            $table->boolean('block')->default(false);
             $table->string('bio')->nullable();
             $table->rememberToken();
             $table->timestamps();

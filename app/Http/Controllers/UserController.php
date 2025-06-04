@@ -171,5 +171,17 @@ class UserController extends Controller
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
     }
+
+    public function getPolice(Request $request)
+    {
+        $polices = User::where('role','police')->paginate(10);
+        return response()->json(['data' => $polices]);
+    }
+    public function getUsers(Request $request)
+    {
+        $users = User::where('role','user')->paginate(10);
+        return response()->json(['data' => $users]);
+    }
+
 }
 
