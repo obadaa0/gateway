@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('gender',['male','female']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('national_number');
+            $table->string('national_number')->default('12312312312312312');
             $table->string('location')->nullable();
             $table->date('birthday');
             $table->enum('role',['user','police'])->default('user');
