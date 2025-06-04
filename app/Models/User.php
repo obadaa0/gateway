@@ -81,15 +81,13 @@ class User extends Authenticatable
     }
     public function block()
     {
-        return $this->update([
-            'block' => true
-        ]);
+        $this->block = 1;
+        return $this->save();
     }
     public function Unblock()
     {
-        return $this->update([
-            'block' => false
-        ]);
+        $this->block = 0;
+        return $this->save();
     }
 
 }

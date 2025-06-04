@@ -61,11 +61,17 @@ class UserController extends Controller
         }
         $user=User::
         where('email',$request['email'])
-        ->where('block',false)
         ->first();
         if(!$user)
         {
             return response()->json(['data' =>'user not found'],404);
+        }
+        if($user->block){
+           return response()->json([
+            'message' => 'Your account has been blocked for violating our privacy policy.',
+            'status' => 'blocked',
+            'code' => 403
+        ], 403);
         }
         if(!Hash::check($valide['password'],$user->password))
         {
@@ -172,13 +178,13 @@ class UserController extends Controller
          $friendsCount = $user->all_friends_count;
          $user['friends'] = $friendsCount;
         $user->loadCount(['posts as posts']);
-        return response()->json(['data' => $user]);
+        return $user;
     }
 
     public function getPolice(Request $request)
     {
         $polices = User::where('role','police')->paginate(10);
-        return response()->json(['data' => $polices]);
+        return  $polices;
     }
     public function getUsers(Request $request)
     {
@@ -188,12 +194,12 @@ class UserController extends Controller
     public function blockUser(User $user)
     {
         $user->block();
-        return "user block suc";
+        return $user;
     }
     public function UnblockUser(User $user)
     {
         $user->Unblock();
-        return "removed block";
+        return $user;
     }
 
 }
