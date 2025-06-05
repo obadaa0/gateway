@@ -28,6 +28,7 @@ return new class extends Migration
             $table->boolean('block')->default(false);
             $table->string('bio')->nullable();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -280,6 +280,5 @@ public function updatePolice(Request $request, User $user)
         }
         return response()->json(['message' => 'can not delete this police'],400);
     }
-
 }
 
