@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\AuthHelper;
 use App\Helpers\MediaHelper;
+use App\Mail\BlockUserMail;
+use App\Mail\UnBlockUserMail;
 use App\Models\Friend;
 use App\Models\User;
 use Exception;
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -193,11 +196,21 @@ class UserController extends Controller
     }
     public function blockUser(User $user)
     {
+        try{
+            Mail::to($user->email)->queue(new BlockUserMail($user));
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
         $user->block();
         return $user;
     }
     public function UnblockUser(User $user)
     {
+          try{
+            Mail::to($user->email)->queue(new UnBlockUserMail($user));
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
         $user->Unblock();
         return $user;
     }
