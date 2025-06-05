@@ -45,7 +45,7 @@ class UserController extends Controller
             return response()->json(['message' => 'User has been exist'],400);
         }
         $user=User::create($validate);
-        return response()->json(['data' => ['userId' => $user->id],200]);
+        return response()->json(['data' => $user],200);
     }
     public function login(Request $request)
     {
@@ -213,6 +213,72 @@ class UserController extends Controller
         }
         $user->Unblock();
         return $user;
+    }
+
+    public function createPolice(Request $request)
+    {
+         try{
+            $validate=$request->validate([
+                'firstname' => 'string',
+                'lastname' => 'string',
+                'email' => 'email|required',
+                'birthday' => 'date|required',
+                'gender' => 'required|in:male,female',
+                'password' => 'required|min:8|confirmed',
+                'password_confirmation' => 'required',
+                'phone' => 'required|digits:10',
+            ]);
+        }
+        catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        }
+        $userEx=User::where('email',$request['email'])->exists();
+        if($userEx)
+        {
+            return response()->json(['message' => 'User has been exist'],400);
+        }
+        $validate['role'] = 'police';
+        $user=User::create($validate);
+        return response()->json(['data' => $user],200);
+    }
+
+public function updatePolice(Request $request, User $user)
+    {
+        try {
+            $validate = $request->validate([
+                'firstname' => 'string|nullable',
+                'lastname' => 'string|nullable',
+                'email' => 'email|nullable',
+                'birthday' => 'date|nullable',
+                'gender' => 'nullable|in:male,female',
+                'password' => 'nullable|min:8',
+                'phone' => 'nullable|digits:10',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        }
+        if (!$user) {
+            return response()->json(['message' => 'Police officer not found'], 404);
+        }
+        $user->update($validate);
+        return response()->json([
+            'message' => 'Police officer updated successfully',
+            'data' => $user
+        ], 200);
+    }
+
+    public function deletePolice(User $user)
+    {
+        if($user->delete()){
+            return response()->json(['message' => 'delete succesfully'],200);
+        }
+        return response()->json(['message' => 'can not delete this police'],400);
     }
 
 }

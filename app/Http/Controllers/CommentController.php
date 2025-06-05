@@ -55,13 +55,12 @@ class CommentController extends Controller
         {
             return response()->json(['message' => 'unAuth'],401);
         }
-        if($comment->id != $user->id)
+        if($comment->user_id != $user->id)
         {
             return response()->json([
                 'message' => "can't delete this comment"
             ], 403);
         }
-
         $comment->delete();
         return response()->json([
 
@@ -77,11 +76,11 @@ class CommentController extends Controller
             return response()->json(['message' => 'unAuth'],401);
         }
         $comments = $post->comment;
-        if(!$comments)
+        if($comments->isEmpty())
         {
-            return response()->json(['message' => 'no comment yet']);
+            return response()->json(['message' => 'no comment yet'],200);
         }
-        $comments = $this->addCommentInfo($comments,$user);
+        $comments = $this->addCommentsInfo($comments,$user);
         return response()->json(['data' => $comments]);
     }
     public function getusername($userid)
@@ -103,10 +102,8 @@ class CommentController extends Controller
         return $user->profile_image ? $user->profile_image : "";
     }
 
-    public function addCommentInfo($comments,$user)
+    public function addCommentsInfo($comments,$user)
     {
-        if(is_array($comments)){
-
             foreach($comments as $comment)
             {
                 if($comment['user_id'] == $user->id)
@@ -119,9 +116,17 @@ class CommentController extends Controller
                 $comment['profile_image'] = $this->getImageProfile($comment['user_id']);
             }
             return $comments;
-        }
-        $comments['username'] = $this->getusername($comments['user_id']);
-        $comments['profile_image'] = $this->getImageProfile($comments['user_id']);
-        return $comments;
+    }
+    public function addCommentInfo($comment,$user)
+    {
+                if($comment['user_id'] == $user->id)
+                {
+                    $comment['flag'] = true;
+                }else{
+                    $comment['flag'] = false;
+                }
+                $comment['username'] = $this->getusername($comment['user_id']);
+                $comment['profile_image'] = $this->getImageProfile($comment['user_id']);
+            return $comment;
     }
 }

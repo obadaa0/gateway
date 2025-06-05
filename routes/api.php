@@ -57,3 +57,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('/report/create',[ReportController::class,'create']);
     Route::get('report/progress/{report}',[ReportController::class,'setProgress']);
     Route::get('report/resolved/{report}',[ReportController::class,'setResolved']);
+    //admin
+    Route::post('/admin/police/create',[UserController::class,'createPolice']);
+    Route::post('admin/police/update/{user}',[UserController::class,'updatePolice']);
+    Route::delete('admin/police/delete/{user}',[UserController::class,'deletePolice']);
