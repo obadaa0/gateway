@@ -20,15 +20,17 @@ class CommentController extends Controller
         $this->NotificationService = $NotificationService;
     }
     public function addComment(Request $request,Post $post)
-{
-    try{
-        $validate = $request->validate([
-            'comment' => 'required|string|max:1000'
-        ]);
-    }catch(ValidationException $e)
     {
-        return response()->json(['message' => $e],422);
+    try
+        {
+            $validate = $request->validate([
+                'comment' => 'required|string|max:1000'
+                 ]);
     }
+    catch(ValidationException $e)
+        {
+            return response()->json(['message' => $e],422);
+        }
     $user = AuthHelper::getUserFromToken($request);
     if(!$user)
     {
@@ -38,7 +40,9 @@ class CommentController extends Controller
         'user_id' => $user->id,
         'comment' => $request->comment
     ]);
-    $comment = $this->addCommentInfo($comment,$user);
+        $comment['flag'] = true;
+        $comment['username'] = $user->firstname . ' '. $user->lastname;
+        $comment['profile_image'] = $user->profile_image;
     if($user->id != $post->User->id){
         $this->NotificationService->sendCommentNotification($user,$post->User,$post->id,$comment);
     }
@@ -47,7 +51,6 @@ class CommentController extends Controller
         'data' => $comment
     ],201);
 }
-
     public function deleteComment(Comment $comment,Request $request)
     {
         $user = AuthHelper::getUserFromToken($request);
@@ -67,7 +70,6 @@ class CommentController extends Controller
             'message' => 'delete comment successfully !'
         ]);
     }
-
     public function getAllCommentsPost(Post $post,Request $request)
     {
     $user = AuthHelper::getUserFromToken($request);
@@ -75,58 +77,23 @@ class CommentController extends Controller
         {
             return response()->json(['message' => 'unAuth'],401);
         }
-        $comments = $post->comment;
+    $comments = $comments = $post->comment()->with('user')->get();
+    foreach($comments as $comment)
+        {
+            if($comment['user_id'] == $user->id)
+            {
+                $comment['flag'] = true;
+            }else{
+                $comment['flag'] = false;
+            }
+            $comment['username'] = $comment['user']['firstname'].' '.$comment['user']['lastname'];
+            $comment['profile_image'] = $comment['user']['profile_image'];
+            unset($comment['user']);
+        }
         if($comments->isEmpty())
         {
             return response()->json(['message' => 'no comment yet'],200);
         }
-        $comments = $this->addCommentsInfo($comments,$user);
         return response()->json(['data' => $comments]);
-    }
-    public function getusername($userid)
-    {
-        $user = User::find($userid);
-        if(!$user)
-        {
-            return;
-        }
-        return $user->firstname . ' ' .$user->lastname;
-    }
-    public function getImageProfile($userid)
-    {
-        $user = User::find($userid);
-        if(!$user)
-        {
-            return;
-        }
-        return $user->profile_image ? $user->profile_image : "";
-    }
-
-    public function addCommentsInfo($comments,$user)
-    {
-            foreach($comments as $comment)
-            {
-                if($comment['user_id'] == $user->id)
-                {
-                    $comment['flag'] = true;
-                }else{
-                    $comment['flag'] = false;
-                }
-                $comment['username'] = $this->getusername($comment['user_id']);
-                $comment['profile_image'] = $this->getImageProfile($comment['user_id']);
-            }
-            return $comments;
-    }
-    public function addCommentInfo($comment,$user)
-    {
-                if($comment['user_id'] == $user->id)
-                {
-                    $comment['flag'] = true;
-                }else{
-                    $comment['flag'] = false;
-                }
-                $comment['username'] = $this->getusername($comment['user_id']);
-                $comment['profile_image'] = $this->getImageProfile($comment['user_id']);
-            return $comment;
     }
 }

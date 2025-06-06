@@ -186,13 +186,13 @@ class UserController extends Controller
 
     public function getPolice(Request $request)
     {
-        $polices = User::where('role','police')->paginate(10);
-        return  $polices;
+    $polices = User::where('role','police')->paginate(10);
+    return $polices;
     }
     public function getUsers(Request $request)
     {
         $users = User::where('role','user')->paginate(10);
-        return response()->json(['data' => $users]);
+        return  $users;
     }
     public function blockUser(User $user)
     {
