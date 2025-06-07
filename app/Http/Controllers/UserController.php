@@ -224,9 +224,8 @@ class UserController extends Controller
                 'email' => 'email|required',
                 'birthday' => 'date|required',
                 'gender' => 'required|in:male,female',
-                'password' => 'required|min:8|confirmed',
-                'password_confirmation' => 'required',
-                'phone' => 'required|digits:10',
+                'password' => 'required|min:8',
+                'phone' => 'required|digits:10'
             ]);
         }
         catch (\Illuminate\Validation\ValidationException $e) {
@@ -256,7 +255,7 @@ public function updatePolice(Request $request, User $user)
                 'gender' => 'nullable|in:male,female',
                 'password' => 'nullable|min:8',
                 'phone' => 'nullable|digits:10',
-            ]);
+            ])
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'message' => 'Validation failed',
