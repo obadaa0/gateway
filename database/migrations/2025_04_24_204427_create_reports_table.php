@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class,'reporter_id');
             $table->longText('description');
             $table->string('media');
-            $table->string('crime_type')->default('fighting');
+            $table->string('crime_type');
             $table->enum('status',['pending','progress','resolved']);
             $table->timestamps();
         });
