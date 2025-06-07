@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redis;
 use App\Helpers\AuthHelper;
 use App\Helpers\MediaHelper;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class PostController extends Controller
 {
@@ -197,4 +199,26 @@ public function showPost(Post $post) {
     $post->setRelation('user', null);
     return response()->json(['data' => [$post]]);
 }
+
+    public function summarizeNews()
+    {
+        // Carbon::setWeekStartsAt(Carbon::SATURDAY);
+        // Carbon::setWeekEndsAt(Carbon::FRIDAY);
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+        $posts = Post::whereBetween('created_at', [$startOfWeek, $endOfWeek])
+    ->whereHas('user', function ($query) {
+        $query->where('role', 'police');
+    })
+    ->pluck('content');
+    $postArray = $posts->toArray();
+$response = Http::post('https://153e-185-184-195-145.ngrok-free.app/summarize', [
+    'texts' => $postArray
+]);
+    if($response->successful())
+    {
+        return response()->json(['data' => $response['summaries']]);
+    }
+    return $response->json();
+    }
 }

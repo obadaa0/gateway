@@ -61,3 +61,5 @@ use Illuminate\Support\Facades\Route;
     Route::post('/admin/police/create',[UserController::class,'createPolice']);
     Route::post('admin/police/update/{user}',[UserController::class,'updatePolice']);
     Route::delete('admin/police/delete/{user}',[UserController::class,'deletePolice']);
+    //news
+    Route::get('/news/show',[PostController::class,'summarizeNews']);
