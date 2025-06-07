@@ -38,7 +38,7 @@ class PostController extends Controller
                 ]);
             }
             try{
-                $response = Http::timeout(100)->post('https://7068-185-184-195-145.ngrok-free.app/predict',[
+                $response = Http::timeout(100)->post('https://2512-185-184-195-145.ngrok-free.app/predict',[
                     'text' => $validatedData['content']
                 ]);
                 if($response->successful())
@@ -63,7 +63,7 @@ class PostController extends Controller
                 'content' => $request['content'],
                 'media' => $path
             ]);
-            // $post->prediction = $response['prediction'];
+            $post->prediction = $response['prediction'];
             return response()->json([
                 'success' => true,
                 'message' => 'Post created successfully',
