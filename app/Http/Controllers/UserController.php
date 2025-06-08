@@ -9,12 +9,8 @@ use App\Mail\UnBlockUserMail;
 use App\Models\Friend;
 use App\Models\User;
 use Exception;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Laravel\Sanctum\PersonalAccessToken;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -280,4 +276,3 @@ public function updatePolice(Request $request, User $user)
         return response()->json(['message' => 'can not delete this police'],400);
     }
 }
-
