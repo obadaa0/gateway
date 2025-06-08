@@ -255,7 +255,7 @@ public function updatePolice(Request $request, User $user)
                 'gender' => 'nullable|in:male,female',
                 'password' => 'nullable|min:8',
                 'phone' => 'nullable|digits:10',
-            ])
+            ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'message' => 'Validation failed',
