@@ -259,7 +259,7 @@ public function updatePolice(Request $request, User $user)
             ], 422);
         }
         if (!$user) {
-            return response()->json(['message' => 'Police officer not found'], 404);
+            return response()->json(['message' => 'Police not found'], 404);
         }
         $user->update($validate);
         return response()->json([
