@@ -178,14 +178,17 @@ class UserController extends Controller
 
          $friendsCount = $user->all_friends_count;
          $user['friends'] = $friendsCount;
-        $isFriend = Friend::where([
+        $isFriend = Friend::where(function ($query) use ($user, $userLog) {
+    $query->where([
         ['user_id', $user->id],
         ['friend_id', $userLog->id],
+        ['status', 'accepted']
     ])->orWhere([
         ['user_id', $userLog->id],
         ['friend_id', $user->id],
-    ])?->where(['status','accepted'])
-    ->exists();
+        ['status', 'accepted']
+    ]);
+})->exists();
         $user['is_friend'] = $isFriend;
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
