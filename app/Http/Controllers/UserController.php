@@ -85,8 +85,8 @@ class UserController extends Controller
         try
         {
             $validData= $request->validate([
-                'image' => 'required|file|mimes:jpeg,png,jpg',
-                'bio' => 'required|string'
+                'image' => 'file|mimes:jpeg,png,jpg',
+                'bio' => 'string'
             ]);
         }
             catch (\Illuminate\Validation\ValidationException $e) {
