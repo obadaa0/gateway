@@ -182,7 +182,7 @@ class UserController extends Controller
         ['user_id', $user->id],
         ['friend_id', $userLog->id],
     ])->orWhere([
-        ['user_id', $user->id],
+        ['user_id', $userLog->id],
         ['friend_id', $user->id],
     ])->where('status','accepted')
     ->exists();
