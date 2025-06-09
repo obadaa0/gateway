@@ -55,19 +55,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
-public function friends()
-{
-    return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
-        ->where(function ($query) {
-            $query->where('status', 'accepted')
-                  ->orWhere(function ($q) {
-                      $q->where('friend_id', $this->id)
-                        ->where('user_id', '!=', $this->id)
-                        ->where('status', 'accepted');
-                  });
-        })
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+        ->wherePivot('status', 'accepted')
         ->withTimestamps();
-}
+    }
+        public function rightFriend()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
+        ->wherePivot('status', 'accepted')
+        ->withTimestamps();
+    }
     public function friendsOf()
     {
         return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
