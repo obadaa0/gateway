@@ -41,7 +41,8 @@ class UserController extends Controller
             return response()->json(['message' => 'User has been exist'],400);
         }
         $user=User::create($validate);
-        return response()->json(['data' => $user],200);
+        $token=$user->createToken('auth_token')->plainTextToken;
+        return response()->json(['data' =>['token' => $token]],200);
     }
     public function login(Request $request)
     {
