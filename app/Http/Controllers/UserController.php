@@ -125,7 +125,8 @@ class UserController extends Controller
         {
             return response()->json(['message' => "unAuth"],401);
         }
-        $user->loadCount(['friends as friends']);
+        $friends = count($user->friends);
+        $user['friends'] = $friends;
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
     }
