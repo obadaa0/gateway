@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('media');
             $table->string('crime_type');
             $table->enum('status',['pending','progress','resolved']);
+            $table->string('location');
             $table->timestamps();
         });
     }
