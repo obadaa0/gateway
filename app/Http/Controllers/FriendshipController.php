@@ -92,7 +92,7 @@ class FriendshipController extends Controller
         if (!$user) {
             return response()->json(['message' => 'user not found'], 404);
         }
-        $friends = $user->friends()->get();
+        $friends = $user->friends();
         if($friends->isEmpty())
             {
                 return response()->json(['message' => 'no friend']);
