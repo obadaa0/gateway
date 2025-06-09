@@ -184,7 +184,8 @@ class UserController extends Controller
     ])->orWhere([
         ['user_id', $user->id],
         ['friend_id', $user->id],
-    ])->exists();
+    ])->where('status','accepted')
+    ->exists();
         $user['is_friend'] = $isFriend;
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
