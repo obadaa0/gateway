@@ -93,6 +93,14 @@ class FriendshipController extends Controller
             return response()->json(['message' => 'user not found'], 404);
         }
         $friends = $user->friends()->get();
+                if($friends->isEmpty())
+        {
+            $friends=$user->rightFriend()->get();
+            if($friends->isEmpty())
+            {
+                return response()->json(['message' => 'no friend']);
+            }
+        }
         return response()->json(['data' => $friends]);
     }
     public function getPendingRequest(Request $request)
