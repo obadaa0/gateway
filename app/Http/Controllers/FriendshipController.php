@@ -168,7 +168,7 @@ class FriendshipController extends Controller
     }
     public function getFriend(User $user)
     {
-        $friend = $user->friends()->get();
+        $friend = $user->friends();
         if($friend->isEmpty())
         {
                 return response()->json(['message' => 'no friend']);
