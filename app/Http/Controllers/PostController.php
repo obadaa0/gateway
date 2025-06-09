@@ -37,33 +37,32 @@ class PostController extends Controller
                     'message' => 'user not found !'
                 ]);
             }
-            try{
-                $response = Http::timeout(100)->post('https://2512-185-184-195-145.ngrok-free.app/predict',[
-                    'text' => $validatedData['content']
-                ]);
-                if($response->successful())
-                {
-                    if($response['prediction'] != "real"){
-                        return response()->json(['message' => ' text is fake'],400);
-                    }
-                }
-            }
-              catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()]);
-        }
-        catch(ConnectionException $e)
-        {
-            return response()->json(['error' => $e->getMessage()]);
-        }
-        catch(RequestException $e){
-            return response()->json(['error' => $e->getMessage()]);
-        };
+        //     try{
+        //         $response = Http::timeout(100)->post('https://2512-185-184-195-145.ngrok-free.app/predict',[
+        //             'text' => $validatedData['content']
+        //         ]);
+        //         if($response->successful())
+        //         {
+        //             if($response['prediction'] != "real"){
+        //                 return response()->json(['message' => ' text is fake'],400);
+        //             }
+        //         }
+        //     }
+        //       catch(Exception $e){
+        //     return response()->json(['error' => $e->getMessage()]);
+        // }
+        // catch(ConnectionException $e)
+        // {
+        //     return response()->json(['error' => $e->getMessage()]);
+        // }
+        // catch(RequestException $e){
+        //     return response()->json(['error' => $e->getMessage()]);
+        // };
             $post=Post::create([
                 'user_id' =>$user->id,
                 'content' => $request['content'],
                 'media' => $path
             ]);
-            $post->prediction = $response['prediction'];
             return response()->json([
                 'success' => true,
                 'message' => 'Post created successfully',

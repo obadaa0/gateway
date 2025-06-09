@@ -14,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->longText('content');
             $table->longText('media')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

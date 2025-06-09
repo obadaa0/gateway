@@ -37,10 +37,15 @@ class ReactionController extends Controller
             return response()->json(['message' => 'unAuth'],401);
         }
         $post =Post::findOrFail($validated['post_id']);
-        $existingReaction = PostReaction::where('user_id', $user->id)
+        $existingReaction = PostReaction::withTrashed()
+            ->where('user_id', $user->id)
             ->where('post_id', $validated['post_id'])
             ->first();
         if ($existingReaction) {
+            if ($existingReaction->trashed()) {
+                $existingReaction->restore();
+                return response()->json(['message' => 'Reaction restored']);
+             }
             if ($existingReaction->reaction_type === $validated['reaction_type']) {
                 $existingReaction->delete();
                 return response()->json(['message' => 'Reaction']);

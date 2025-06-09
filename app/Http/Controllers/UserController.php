@@ -177,7 +177,7 @@ class UserController extends Controller
          $friendsCount = $user->all_friends_count;
          $user['friends'] = $friendsCount;
         $user->loadCount(['posts as posts']);
-        return $user;
+        return response()->json(['data' => $user]);
     }
 
     public function getPolice(Request $request)

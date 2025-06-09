@@ -26,6 +26,14 @@ class User extends Authenticatable
         'bio',
         'role'
     ];
+        protected static function booted()
+    {
+        static::deleting(function ($user) {
+            $user->posts()->delete();
+            $user->comments()->delete();
+            $user->reaction()->delete();
+        });
+    }
 
     protected $hidden = [
         'password',
@@ -91,5 +99,8 @@ class User extends Authenticatable
         $this->block = 0;
         return $this->save();
     }
-
+    public function reaction()
+    {
+        return $this->hasMany(PostReaction::class);
+    }
 }
