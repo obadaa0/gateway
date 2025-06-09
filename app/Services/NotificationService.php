@@ -12,6 +12,7 @@ class NotificationService
         $receiver->notifications()->create([
             'sender_id' => $sender->id,
             'type' => 'friend_request',
+            'status' => 'pending',
             'data' => json_encode([
                 'message' => 'send friend request for you',
                 'friend_request_id' => $sender->id
@@ -23,6 +24,7 @@ class NotificationService
                $receiver->notifications()->create([
             'sender_id' => $sender->id,
             'type' => 'accept_friend_request',
+            'status' => 'accepted',
             'data' => json_encode([
                 'message' => 'accept your friend request',
                 'friend_request_id' => $sender->id

@@ -171,5 +171,4 @@ class FriendshipController extends Controller
         }
         return response()->json(['data' => $friend]);
     }
-
 }
