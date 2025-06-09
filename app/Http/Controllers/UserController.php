@@ -170,13 +170,22 @@ class UserController extends Controller
 }
     public function showprofile(User $user,Request $request)
     {
-        $token = AuthHelper::getUserFromToken($request);
-        if(!$token)
+        $userLog = AuthHelper::getUserFromToken($request);
+        if(!$userLog)
         {
             return response()->json(['message' => 'UnAuth'],401);
         }
+
          $friendsCount = $user->all_friends_count;
          $user['friends'] = $friendsCount;
+        $isFriend = Friend::where([
+            ['user_id', $user->id],
+            ['friend_id', $userLog->id],
+        ])->orWhere([
+            ['user_id', $userLog->id],
+            ['friend_id', $user->id],
+        ])->first()->exists();
+        $user['is_friend'] = $isFriend;
         $user->loadCount(['posts as posts']);
         return response()->json(['data' => $user]);
     }
