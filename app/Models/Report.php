@@ -13,7 +13,8 @@ class Report extends Model
         'description',
         'status',
         'media',
-        'crime_type'
+        'crime_type',
+        'location'
     ];
 
     public function User()

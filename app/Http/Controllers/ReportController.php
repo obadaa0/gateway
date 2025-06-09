@@ -34,7 +34,8 @@ class ReportController extends Controller
         try{
             $validData = $request->validate([
                 'description' => 'required|string',
-                'media' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi'
+                'media' => 'required|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi',
+                'location' => 'string'
             ]);
         } catch (\Illuminate\Validation\ValidationException $e){
             return response()->json(['message' => $e->errors()]);
