@@ -95,11 +95,7 @@ class FriendshipController extends Controller
         $friends = $user->friends()->get();
                 if($friends->isEmpty())
         {
-            $friends=$user->rightFriend()->get();
-            if($friends->isEmpty())
-            {
                 return response()->json(['message' => 'no friend']);
-            }
         }
         return response()->json(['data' => $friends]);
     }
@@ -175,11 +171,7 @@ class FriendshipController extends Controller
         $friend = $user->friends()->get();
         if($friend->isEmpty())
         {
-            $friend=$user->rightFriend()->get();
-            if($friend->isEmpty())
-            {
                 return response()->json(['message' => 'no friend']);
-            }
         }
         return response()->json(['data' => $friend]);
     }
