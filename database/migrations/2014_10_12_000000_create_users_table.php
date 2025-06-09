@@ -27,6 +27,9 @@ return new class extends Migration
             $table->string('phone');
             $table->boolean('block')->default(false);
             $table->string('bio')->nullable();
+            $table->string('country');
+            $table->string('city');
+            $table->string('street');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
