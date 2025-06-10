@@ -6,6 +6,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
     //user
@@ -64,3 +65,5 @@ use Illuminate\Support\Facades\Route;
     Route::delete('admin/police/delete/{user}',[UserController::class,'deletePolice']);
     //news
     Route::get('/news/show',[PostController::class,'summarizeNews']);
+    //search
+    Route::post('/search',[SearchController::class,'search']);

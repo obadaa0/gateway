@@ -75,7 +75,7 @@ class UserController extends Controller
         }
         if(!Hash::check($valide['password'],$user->password))
         {
-            return response()->json(['data' =>'Not correct password'],401);
+            return response()->json(['message' =>'Not correct password'],401);
         }
         $token=$user->createToken('auth_token')->plainTextToken;
         return response()->json(['data' =>['token' => $token]],200);
