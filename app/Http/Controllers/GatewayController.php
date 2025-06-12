@@ -60,8 +60,8 @@ public function handle(Request $request)
     } catch (\Exception $e) {
         return response()->json([
             'error' => 'Gateway Error',
-            'message' => $e->getMessage(),
-        ], 502);
+            'message' => 'Not Found URL',
+        ], 404);
     }
 }
 }
