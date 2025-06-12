@@ -14,7 +14,7 @@ public function handle(Request $request)
         ? env('DASHBOARD_API_URL')
         : env('MAIN_API_URL');
     $url = rtrim($baseUrl, '/') . '/' . ltrim($path, '/');
-    $http = Http::withHeaders([
+    $http = Http::timeout(100)->withHeaders([
         'Authorization' => $request->header('Authorization'),
         'Accept' => 'application/json',
     ]);
