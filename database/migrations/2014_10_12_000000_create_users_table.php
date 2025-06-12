@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('national_number')->default('12312312312312312');
             $table->string('location')->nullable();
             $table->date('birthday');
-            $table->enum('role',['user','police'])->default('user');
+            $table->enum('role',['user','police','admin'])->default('user');
             $table->string('profile_image')->default("");
             $table->string('phone');
             $table->boolean('block')->default(false);
