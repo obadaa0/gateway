@@ -30,29 +30,29 @@ class DatabaseSeeder extends Seeder
         //         }
         //     });
         // });
-        // User::create([
-        //     'firstname' => 'hamza',
-        //     'lastname' => 'saad aldeen',
-        //     'father_name' => "adasd",
-        //     'mother_name' => 'dasdas',
-        //     'email' => 'hamzasaadaldeen20022@gmail.com',
-        //     'birthday' => '2002/7/17',
-        //     'gender' => 'male',
-        //     'password' => '12345678',
-        //     'phone' => '0954649881',
-        //     'role' =>  'admin'
-        // ]);
-        // User::create([
-        //     'firstname' => 'obada',
-        //     'lastname' => 'sabbagh',
-        //     'father_name' => "adasd",
-        //     'mother_name' => 'dasdas',
-        //     'email' => 'obadasabbagh@gmail.com',
-        //     'birthday' => '2002/7/17',
-        //     'gender' => 'male',
-        //     'password' => '12345678',
-        //     'phone' => '0954649881',
-        //     'role' =>  'police'
-        // ]);
+        User::create([
+            'firstname' => 'hamza',
+            'lastname' => 'saad aldeen',
+            'father_name' => "adasd",
+            'mother_name' => 'dasdas',
+            'email' => 'hamzasaadaldeen20022@gmail.com',
+            'birthday' => '2002/7/17',
+            'gender' => 'male',
+            'password' => '12345678',
+            'phone' => '0954649881',
+            'role' =>  'admin'
+        ]);
+        User::create([
+            'firstname' => 'obada',
+            'lastname' => 'sabbagh',
+            'father_name' => "adasd",
+            'mother_name' => 'dasdas',
+            'email' => 'obadasabbagh@gmail.com',
+            'birthday' => '2002/7/17',
+            'gender' => 'male',
+            'password' => '12345678',
+            'phone' => '0954649881',
+            'role' =>  'police'
+        ]);
     }
 }
