@@ -33,6 +33,8 @@ class DatabaseSeeder extends Seeder
         User::create([
             'firstname' => 'hamza',
             'lastname' => 'saad aldeen',
+            'father_name' => "adasd",
+            'mother_name' => 'dasdas',
             'email' => 'hamzasaadaldeen20022@gmail.com',
             'birthday' => '2002/7/17',
             'gender' => 'male',
@@ -43,6 +45,8 @@ class DatabaseSeeder extends Seeder
         User::create([
             'firstname' => 'obada',
             'lastname' => 'sabbagh',
+            'father_name' => "adasd",
+            'mother_name' => 'dasdas',
             'email' => 'obadasabbagh@gmail.com',
             'birthday' => '2002/7/17',
             'gender' => 'male',
