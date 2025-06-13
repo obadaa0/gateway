@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('education');
             $table->string('live');
             $table->string('work');
+            $table->string('badge_number')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
