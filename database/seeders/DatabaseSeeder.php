@@ -40,7 +40,10 @@ class DatabaseSeeder extends Seeder
             'gender' => 'male',
             'password' => '12345678',
             'phone' => '0954649881',
-            'role' =>  'admin'
+            'role' =>  'admin',
+            'education' => "Software Ing",
+            'live' => 'Damascus',
+            'work' => 'software'
         ]);
         User::create([
             'firstname' => 'obada',
@@ -52,7 +55,10 @@ class DatabaseSeeder extends Seeder
             'gender' => 'male',
             'password' => '12345678',
             'phone' => '0954649881',
-            'role' =>  'police'
+            'role' =>  'police',
+            'education' => "Software Ing",
+            'live' => 'Damascus',
+            'work' => 'software'
         ]);
     }
 }

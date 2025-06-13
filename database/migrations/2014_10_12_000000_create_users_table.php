@@ -32,6 +32,9 @@ return new class extends Migration
             $table->string('country')->default('syria');
             $table->string('city')->default('damascus');
             $table->string('street')->default('babAlhara');
+            $table->string('education');
+            $table->string('live');
+            $table->string('work');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
