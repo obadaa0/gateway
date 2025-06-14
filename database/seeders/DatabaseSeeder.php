@@ -43,7 +43,8 @@ class DatabaseSeeder extends Seeder
             'role' =>  'admin',
             'education' => "Software Ing",
             'live' => 'Damascus',
-            'work' => 'software'
+            'work' => 'software',
+            'national_number' => '1'
         ]);
         User::create([
             'firstname' => 'obada',
@@ -58,7 +59,8 @@ class DatabaseSeeder extends Seeder
             'role' =>  'police',
             'education' => "Software Ing",
             'live' => 'Damascus',
-            'work' => 'software'
+            'work' => 'software',
+            'national_number' => '1'
         ]);
     }
 }

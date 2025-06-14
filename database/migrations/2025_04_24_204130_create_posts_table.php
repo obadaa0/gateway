@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->longText('content');
             $table->longText('media')->nullable();
+            $table->boolean('isNews')->default(0)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
