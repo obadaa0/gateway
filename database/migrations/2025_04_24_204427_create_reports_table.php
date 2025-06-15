@@ -14,12 +14,14 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class,'reporter_id');
+            $table->foreignIdFor(User::class, 'reporter_id');
             $table->longText('description');
             $table->string('media');
             $table->string('crime_type');
-            $table->enum('status',['pending','progress','resolved','rejected']);
+            $table->enum('status', ['pending', 'progress', 'resolved', 'rejected']);
             $table->string('location');
+            $table->string('Lon')->nullable();
+            $table->string('Lat')->nullable();
             $table->timestamps();
         });
     }
