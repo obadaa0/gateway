@@ -23,14 +23,16 @@ class News extends Command
             })->where('isNews', '!=', true)
             ->pluck('content');
         $postArray = $posts->toArray();
-        $response = Http::post('https://19f5-212-102-51-98.ngrok-free.app/summarize', [
+        $response = Http::post('https://a08e-169-150-218-29.ngrok-free.app/summarize', [
             'texts' => $postArray
         ]);
         if ($response->successful()) {
+            $url = env('GATE_WAY_URL') . '/storage/news/' . 'news.png';
             $news = Post::create([
                 'user_id' => 1,
                 'content' => json_encode($response['summaries']),
-                'isNews' => true
+                'isNews' => true,
+                'media' => $url
             ]);
         }
         // else {
