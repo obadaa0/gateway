@@ -15,6 +15,8 @@ class Report extends Model
         'media',
         'crime_type',
         'location',
+        'lng',
+        'lat'
     ];
 
     public function User()

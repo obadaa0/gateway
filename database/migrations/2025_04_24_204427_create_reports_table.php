@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('crime_type');
             $table->enum('status', ['pending', 'progress', 'resolved', 'rejected']);
             $table->string('location');
+            $table->string('lng')->nullable();
+            $table->string('Lat')->nullable();
             $table->timestamps();
         });
     }
