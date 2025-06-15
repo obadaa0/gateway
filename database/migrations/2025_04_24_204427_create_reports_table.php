@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('lng')->nullable();
             $table->string('Lat')->nullable();
+            $table->string('predicted')->nullable();
             $table->timestamps();
         });
     }
