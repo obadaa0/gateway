@@ -8,20 +8,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory , SoftDeletes;
-    protected $fillable=[
+    use HasFactory, SoftDeletes;
+    protected $fillable = [
         'user_id',
         'content',
         'media',
         'isNews'
     ];
-protected static function booted()
-{
-    static::deleting(function ($post) {
+    protected static function booted()
+    {
+        static::deleting(function ($post) {
             $post->reactions()->get()->each->delete();
             $post->comment()->get()->each->delete();
-    });
-}
+        });
+    }
     public function User()
     {
         return $this->belongsTo(User::class);

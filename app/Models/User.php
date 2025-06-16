@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable ,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
     protected $fillable = [
         'firstname',
         'lastname',
@@ -36,7 +36,7 @@ class User extends Authenticatable
         'city',
         'street'
     ];
-        protected static function booted()
+    protected static function booted()
     {
         static::deleting(function ($user) {
             $user->posts()->delete();
@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
     public function reports()
     {
-        return $this->hasMany(Report::class,'reporter_id');
+        return $this->hasMany(Report::class, 'reporter_id');
     }
     public function comments()
     {
@@ -67,36 +67,13 @@ class User extends Authenticatable
     }
     public function friends()
     {
-    $friendsAsUser = $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
-        ->wherePivot('status', 'accepted')
-        ->get();
-    $friendsAsFriend = $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
-        ->wherePivot('status', 'accepted')
-        ->get();
-    return $friendsAsUser->merge($friendsAsFriend)->unique('id');
-    }
-    public function friendsOf()
-    {
-        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
+        $friendsAsUser = $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
             ->wherePivot('status', 'accepted')
-            ->withTimestamps();
-    }
-        public function getAllFriendsAttribute()
-    {
-        $friendsFromMe = $this->friends()->pluck('users.id')->toArray();
-        $friendsToMe = $this->friendsOf()->pluck('users.id')->toArray();
-
-        $allFriendIds = array_unique(array_merge($friendsFromMe, $friendsToMe));
-
-        return User::whereIn('id', $allFriendIds)->get();
-    }
-
-    public function getAllFriendsCountAttribute()
-    {
-        $friendsFromMeCount = $this->friends()->count();
-        $friendsToMeCount = $this->friendsOf()->count();
-
-        return $friendsFromMeCount + $friendsToMeCount;
+            ->get();
+        $friendsAsFriend = $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
+            ->wherePivot('status', 'accepted')
+            ->get();
+        return $friendsAsUser->merge($friendsAsFriend)->unique('id');
     }
 
     public function notifications()
